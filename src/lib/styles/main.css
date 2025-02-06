@@ -1,0 +1,111 @@
+@layer theme, base, components, utilities;
+
+@import 'fonts.css' layer(theme);
+@import 'themes.css' layer(theme);
+@import 'base.css' layer(base);
+
+@keyframes circle-in-top-right {
+	from {
+		clip-path: circle(0%);
+	}
+	to {
+		clip-path: circle(150% at top right);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	[style*='--tag'] {
+		view-transition-name: var(--tag);
+	}
+
+	@media (width <= 1600px) {
+		::view-transition-old(theme) {
+			animation: none;
+		}
+
+		::view-transition-new(theme) {
+			animation: 2s cubic-bezier(0.25, 1, 0.3, 1) circle-in-top-right forwards;
+		}
+	}
+}
+
+@layer base {
+	html:has(dialog[open]) {
+		overflow: hidden;
+	}
+
+	@keyframes pulse {
+		50% {
+			opacity: 0.5;
+		}
+	}
+}
+
+@layer components {
+	:where(html) {
+		--pf-header-height: 3rem;
+	}
+
+	:where(main) {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		inline-size: 100%;
+		margin-block-end: 3rem;
+		min-block-size: calc(100dvh - var(--pf-header-height));
+	}
+
+	:where(section) {
+		display: flex;
+		flex-direction: column;
+		inline-size: 100%;
+		max-inline-size: 92dvw;
+		margin-inline: auto;
+		gap: 2rem;
+	}
+
+	.section-title {
+		font-size: var(--pf-text-lg);
+		font-weight: 700;
+		position: relative;
+		line-height: 1;
+		width: fit-content;
+
+		& > span {
+			margin-inline-start: 0.5ch;
+		}
+
+		&::before {
+			content: '';
+			inline-size: 2.5ch;
+			block-size: 100%;
+			position: absolute;
+			top: 0;
+			background-color: hsl(var(--pf-primary-light));
+			z-index: -1;
+		}
+	}
+}
+
+@layer utilities {
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+
+	@keyframes pulse {
+		50% {
+			opacity: 0.5;
+		}
+	}
+
+	.pulse {
+		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+}
