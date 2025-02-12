@@ -15,8 +15,8 @@
 	let open = $state(false);
 
 	const closeModal = () => {
-		open = false;
 		modal.close();
+		open = false;
 	};
 
 	export const openModal = () => {
@@ -25,7 +25,10 @@
 	};
 </script>
 
-<dialog bind:this={modal} {...attrs}>
+<dialog
+	bind:this={modal}
+	{...attrs}
+>
 	{#if open}
 		<div class="wrapper">
 			<div class="top">
@@ -51,24 +54,17 @@
 	dialog {
 		max-inline-size: 90dvw;
 		max-block-size: 90dvh;
-		transform: translateX(100dvh);
-		transition: transform 0.7s ease-in-out, overlay 0.7s ease-in-out, display 0.7s ease-in-out;
-		transition-behavior: allow-discrete;
+		margin: auto;
 
 		&::backdrop {
 			background-color: hsla(var(--pf-black), 0.5);
-			backdrop-filter: blur(4px);
+			backdrop-filter: blur(6px);
 		}
 
-		&[open] {
-			border-radius: 1rem;
+		&:open {
+			border-radius: var(--pf-radius);
 			margin: auto;
 			box-shadow: var(--pf-shadow-lg);
-			transform: translateX(0);
-
-			@starting-style {
-				transform: translateX(0);
-			}
 		}
 	}
 
@@ -78,6 +74,7 @@
 		gap: 1rem;
 		inline-size: fit-content;
 		padding: 1rem;
+		box-shadow: var(--pf-shadow-md);
 	}
 
 	.top {
@@ -89,6 +86,9 @@
 
 		& > .title {
 			font-weight: 600;
+		}
+		& > :global(button) {
+			flex-shrink: 0;
 		}
 	}
 </style>

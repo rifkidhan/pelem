@@ -1,7 +1,7 @@
 @layer theme, base, components, utilities;
 
-@import 'fonts.css' layer(theme);
 @import 'themes.css' layer(theme);
+@import 'fonts.css' layer(theme);
 @import 'base.css' layer(base);
 
 @keyframes circle-in-top-right {
@@ -12,6 +12,7 @@
 		clip-path: circle(150% at top right);
 	}
 }
+
 @media (prefers-reduced-motion: no-preference) {
 	[style*='--tag'] {
 		view-transition-name: var(--tag);

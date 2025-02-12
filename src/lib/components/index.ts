@@ -14,6 +14,7 @@ export { default as HeroSlider } from "./HeroSlider.svelte";
 export { default as ListItem } from "./ListItem.svelte";
 export { default as MediaGrid } from "./MediaGrid.svelte";
 export { default as OfficialSite } from "./OfficialSite.svelte";
+export { default as Truncate } from "./Truncate.svelte";
 export { default as YTEmbed } from "./YTEmbed.svelte";
 
 // layout components

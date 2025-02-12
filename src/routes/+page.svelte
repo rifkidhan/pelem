@@ -12,9 +12,7 @@
 
 <main>
 	<h1 class="sr-only">Welcome to Pelem.</h1>
-	<svelte:boundary>
-		<HeroSlider label="Trending on this day" data={allTrending} />
-	</svelte:boundary>
+	<HeroSlider label="Trending on this day" data={allTrending} />
 	<section>
 		<div>
 			<h2 class="section-title">
@@ -27,12 +25,12 @@
 		<Carousel label="Movie Trending">
 			{#each movieTrending as item (item.id)}
 				<Card
-					id={String(item.id)}
 					url={`/movie/${item.id}`}
 					title={item.title}
 					img={item.poster_path}
 					rating={item.vote_average}
 					aria-roledescription="item"
+					shadow
 				/>
 			{/each}
 		</Carousel>
@@ -49,13 +47,12 @@
 		<Carousel label="Series Trending">
 			{#each tvTrending as item (item.id)}
 				<Card
-					id={String(item.id)}
 					url={`/tv-show/${item.id}`}
 					title={item.name}
 					img={item.poster_path}
 					rating={item.vote_average}
 					aria-roledescription="item"
-					type="tv"
+					shadow
 				/>
 			{/each}
 		</Carousel>

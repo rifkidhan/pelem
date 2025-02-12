@@ -139,9 +139,15 @@
 
 	.content {
 		inline-size: 50%;
+		block-size: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
 		& > .title {
 			font-size: var(--pf-text-xl);
+			font-weight: 600;
+			line-height: 1.2;
 		}
 	}
 
@@ -162,7 +168,7 @@
 				inline-size: 1rem;
 				block-size: 1rem;
 				border: solid 2px hsl(var(--pf-accent-90));
-				border-radius: 1rem;
+				border-radius: var(--pf-radius);
 
 				&[aria-current='true'] {
 					background-color: hsl(var(--pf-accent-90));

@@ -19,10 +19,15 @@
 
 <style>
 	.list-item {
-		& > .heading {
+		&:has(.content:empty) {
+			display: none;
+		}
+
+		.heading {
 			font-weight: 600;
 		}
-		& > .content {
+
+		.content {
 			display: flex;
 			flex-wrap: wrap;
 

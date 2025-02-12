@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { TITLE_PAGE } from "$lib/utils/constants";
-	import throttle from "$lib/utils/throttle";
+	import Button from "./Button.svelte";
+	import Icon from "./icon/Icon.svelte";
 	import ThemeToggle from "./ThemeToggle.svelte";
 
 	const NAVIGATIONS = [
@@ -17,36 +18,32 @@
 			url: "/people"
 		}
 	];
-
-	let visible = $state(true);
-	let scroll = $state(0);
-	let lastScroll = $state(0);
-
-	const handleScroll = throttle(() => {
-		visible = (lastScroll > scroll && lastScroll - scroll > 70) || scroll < 500;
-		lastScroll = scroll;
-	}, 100);
 </script>
 
-<svelte:window bind:scrollY={scroll} onscroll={handleScroll} />
-
-<header data-visible={visible}>
-	<div class="header-wrapper">
-		<nav>
-			<div class="navigation">
-				<a href="/" class="home">
-					{TITLE_PAGE}
-				</a>
-				<ul>
-					{#each NAVIGATIONS as nav}
-						<li>
-							<a href={nav.url}>{nav.title}</a>
-						</li>
-					{/each}
-				</ul>
-			</div>
+<header>
+	<nav>
+		<a href="/" class="home">
+			<span>
+				{TITLE_PAGE}
+			</span>
+		</a>
+		<div class="navigation">
+			<ul>
+				{#each NAVIGATIONS as nav}
+					<li>
+						<a href={nav.url}>{nav.title}</a>
+					</li>
+				{/each}
+			</ul>
 			<ThemeToggle />
-		</nav>
+			<Button popovertarget="mobile-navigation" class="nav-button" variant="ghost" size="square">
+				<Icon icon="menu" />
+				<span class="sr-only">Menu</span>
+			</Button>
+		</div>
+	</nav>
+	<div id="mobile-navigation" popover="auto">
+		Test
 	</div>
 </header>
 
@@ -59,34 +56,36 @@
 		top: 0;
 		left: 0;
 		z-index: 5;
-		transition: transform 200ms ease-in-out;
+		background-color: hsl(var(--pf-accent-20));
 
-		&[data-visible='false'] {
-			transform: translateY(-4rem);
-		}
+		& > nav {
+			max-width: 92dvw;
+			margin-inline: auto;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			block-size: 100%;
 
-		.header-wrapper {
-			inline-size: 100%;
-			background-color: hsl(var(--pf-accent-20));
-
-			& > nav {
-				max-width: 92dvw;
-				margin-inline: auto;
+			.navigation {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
-				justify-content: space-between;
+				gap: 1.5rem;
 
-				.navigation {
-					display: flex;
+				@media (min-width: 768px) {
+					:global(.nav-button) {
+						display: none;
+					}
+				}
+
+				& > ul {
+					display: inline-flex;
 					flex-direction: row;
-					align-items: center;
-					gap: 1.5rem;
+					gap: 1rem;
 
-					& > ul {
-						display: inline-flex;
-						flex-direction: row;
-						gap: 1rem;
+					@media (max-width: 768px) {
+						display: none;
 					}
 				}
 			}
@@ -97,5 +96,17 @@
 		font-weight: 700;
 		color: hsl(var(--pf-primary));
 		font-size: clamp(1rem, calc(0.5rem + 5vw), 2rem);
+		line-height: 1;
+	}
+
+	[popover] {
+		inset: unset;
+	}
+	#mobile-navigation {
+		inline-size: 60dvw;
+		block-size: 100dvh;
+		right: 0;
+		top: 0;
+		backdrop-filter: blur(2px);
 	}
 </style>

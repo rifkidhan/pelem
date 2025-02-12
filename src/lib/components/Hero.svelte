@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Genre, Video } from "$lib/types";
 	import type { Snippet } from "svelte";
+	import type { ClassValue } from "svelte/elements";
 
 	import Button from "./Button.svelte";
 	import Icon from "./icon/Icon.svelte";
@@ -22,6 +23,7 @@
 		type?: "movie" | "tv";
 		misc: Snippet;
 		creators?: Snippet;
+		class?: ClassValue;
 	}
 
 	let {
@@ -36,7 +38,8 @@
 		video,
 		type = "movie",
 		creators,
-		misc
+		misc,
+		...props
 	}: HeroProps = $props();
 
 	let videoModal = $state() as Modal;
@@ -47,7 +50,7 @@
 	);
 </script>
 
-<div class="hero">
+<div class={["hero", props.class]}>
 	<div class="backdrop">
 		{#if backdrop_path}
 			<Image src={backdrop_path} type="backdrop" full priority alt="" aria-hidden="true" />
@@ -156,7 +159,7 @@
 		block-size: fit-content;
 		display: block;
 		overflow: hidden;
-		border-radius: 0.5rem;
+		border-radius: var(--pf-radius);
 		box-shadow: var(--pf-shadow-md);
 	}
 

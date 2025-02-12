@@ -36,6 +36,8 @@
 	--pf-shadow-md: 0 4px 6px -1px hsla(0, 0%, 0%, 0.3), 0 2px 4px -2px hsla(0, 0%, 0%, 0.3);
 	--pf-shadow-lg: 0 10px 15px -3px hsla(0, 0%, 0%, 0.3), 0 4px 6px -4px hsla(0, 0%, 0%, 0.3);
 
+	--pf-radius: 0.5rem;
+
 	--pf-animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 

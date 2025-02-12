@@ -10,20 +10,12 @@
 
 	let person = $derived(data.people);
 
-	let previousCast = $derived(person.combine_cast.filter(v => !v.upcoming));
-	let upcomingCast = $derived(person.combine_cast.filter(v => v.upcoming));
-
-	let officialSiteShow = $derived.by(() => {
-		const ids = person.external_ids;
-
-		if (
-			isNull(person.homepage) && isNull(ids.facebook_id) && isNull(ids.instagram_id)
-			&& isNull(ids.twitter_id) && isNull(ids.tiktok_id) && isNull(ids.youtube_id)
-		) {
-			return false;
-		}
-		return true;
-	});
+	let previousCast = $derived(
+		person.combine_cast.filter(v => v.release_date || v.first_air_date)
+	);
+	let upcomingCast = $derived(
+		person.combine_cast.filter(v => !v.release_date && !v.first_air_date)
+	);
 
 	$inspect(person);
 </script>
@@ -42,23 +34,21 @@
 						{#if person.known_for_department === "Acting"}
 							{#each person.popular_cast as item}
 								<Card
-									id={String(item.id)}
 									img={item.poster_path}
 									title={item.title ?? item.name}
-									type={item.media_type === "tv" ? "tv" : "movie"}
 									url={`/${item.media_type === "tv" ? "tv-show" : "movie"}/${item.id}`}
 									aria-roledescription="item"
+									shadow
 								/>
 							{/each}
 						{:else}
 							{#each person.popular_crew as item}
 								<Card
-									id={String(item.id)}
 									img={item.poster_path}
 									title={item.title ?? item.name}
-									type={item.media_type === "tv" ? "tv" : "movie"}
 									url={`/${item.media_type === "tv" ? "tv-show" : "movie"}/${item.id}`}
 									aria-roledescription="item"
+									shadow
 								/>
 							{/each}
 						{/if}
@@ -97,18 +87,16 @@
 						{/each}
 					</ListItem>
 				{/if}
-				{#if officialSiteShow}
-					<ListItem heading="Official site">
-						<OfficialSite
-							homepage={person.homepage}
-							twitter_id={person.external_ids.twitter_id}
-							facebook_id={person.external_ids.facebook_id}
-							tiktok_id={person.external_ids.tiktok_id}
-							youtube_id={person.external_ids.youtube_id}
-							instagram_id={person.external_ids.instagram_id}
-						/>
-					</ListItem>
-				{/if}
+				<ListItem heading="Official site">
+					<OfficialSite
+						homepage={person.homepage}
+						twitter_id={person.external_ids.twitter_id}
+						facebook_id={person.external_ids.facebook_id}
+						tiktok_id={person.external_ids.tiktok_id}
+						youtube_id={person.external_ids.youtube_id}
+						instagram_id={person.external_ids.instagram_id}
+					/>
+				</ListItem>
 			</ul>
 		</section>
 
@@ -136,7 +124,7 @@
 						<div>
 							{section}
 						</div>
-						<Icon icon="chevron-top" />
+						<Icon icon="chevron-down" />
 					</div>
 				</summary>
 			{/snippet}
@@ -257,7 +245,7 @@
 		block-size: fit-content;
 		display: block;
 		overflow: hidden;
-		border-radius: 0.5rem;
+		border-radius: var(--pf-radius);
 		box-shadow: var(--pf-shadow-md);
 	}
 
@@ -347,14 +335,25 @@
 			flex-direction: column;
 			position: relative;
 			box-shadow: var(--pf-shadow-md);
-			border-radius: 0.5rem;
+			border-radius: var(--pf-radius);
 
 			&[open] {
 				gap: 1rem;
 			}
 
+			&::details-content {
+				opacity: 0;
+				block-size: 0;
+				overflow-y: clip;
+				transition: content-visibility 0.5s allow-discrete, opacity 0.5s, block-size 0.5s;
+			}
+
+			&[open]::details-content {
+				opacity: 1;
+				block-size: fit-content;
+			}
+
 			summary {
-				list-style: none;
 				cursor: pointer;
 				display: block;
 				font-weight: 600;
@@ -366,6 +365,12 @@
 					justify-content: space-between;
 					align-items: center;
 					padding-inline: 1rem;
+
+					details[open] & {
+						:global(svg) {
+							rotate: 180deg;
+						}
+					}
 				}
 			}
 
@@ -398,7 +403,7 @@
 			.thumbnail {
 				display: block;
 				inline-size: 48px;
-				border-radius: 0.5rem;
+				border-radius: var(--pf-radius);
 				overflow: hidden;
 			}
 

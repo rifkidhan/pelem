@@ -13,7 +13,6 @@
 			const elem = document.createElement("link");
 			elem.rel = "preconnect";
 			elem.href = url;
-			elem.crossOrigin;
 			document.head.append(elem);
 		};
 
@@ -41,16 +40,12 @@
 
 	let {
 		videoKey,
-		thumbnailQuality = "maxresdefault",
 		title = "Youtube video player",
 		...attrs
 	}: YTEmbed = $props();
 
 	const params = new URLSearchParams({ autoplay: "1", playsinline: "1" });
 
-	let thumbnailImage = $derived(
-		`https://i.ytimg.com/vi_webp/${videoKey}/${thumbnailQuality}.webp`
-	);
 	let embedUrl = $derived(
 		`https://www.youtube-nocookie.com/embed/${videoKey}?${params.toString()}`
 	);
@@ -67,7 +62,7 @@
 	onDestroy(removePrefetch);
 </script>
 
-<div class="yt-embed" {title} use:ytImage={{ key: videoKey }} {...attrs}>
+<div class="yt-embed" {title} use:ytImage={{ key: videoKey, quality: "hqdefault" }} {...attrs}>
 	{#if showIframe}
 		<iframe
 			src={embedUrl}
@@ -88,8 +83,11 @@
 		display: block;
 		position: relative;
 		contain: content;
-		block-size: 100%;
-		inline-size: auto;
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: var(--pf-radius);
+		overflow: hidden;
+		min-inline-size: 40dvw;
 
 		&::before {
 			content: attr(title);

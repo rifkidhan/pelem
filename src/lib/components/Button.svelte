@@ -27,7 +27,7 @@
 		font-weight: 600;
 		white-space: nowrap;
 		gap: 0.5rem;
-		border-radius: 0.375rem;
+		border-radius: var(--pf-radius);
 
 		&:disabled {
 			pointer-events: none;
@@ -45,7 +45,7 @@
 		color: hsl(var(--pf-accent-5));
 
 		&:hover {
-			background-color: hsl(var(--pf-accent-80));
+			background-color: hsla(var(--pf-accent-90), 0.5);
 		}
 	}
 
@@ -69,7 +69,7 @@
 
 	.ghost {
 		&:hover {
-			background-color: hsl(var(--pf-accent-20));
+			background-color: hsl(var(--pf-accent-20), 0.5);
 		}
 	}
 

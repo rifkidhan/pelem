@@ -45,7 +45,7 @@
 		return filter[0].certification;
 	});
 
-	$inspect(subpath);
+	$inspect(movie);
 </script>
 
 {#key movie.id}

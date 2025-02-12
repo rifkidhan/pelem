@@ -21,16 +21,27 @@
 
 <main>
 	<h1>Movies</h1>
-	<div>
+	<div class="image">
 		<Image alt="test" />
 	</div>
 	<YTEmbed videoKey="kAw4PH2IQgo" />
 	<YTEmbed videoKey="LE6B984GXJk" />
-	<Card img={test.still_path} img_type="still" title={test.name} />
+	<Card img={test.still_path} img_type="still" title={test.name}>
+		<hgroup>
+			<h3>Next Episode</h3>
+			<p>
+				<span>S{test.season_number}E{test.episode_number}</span>
+				<span>
+					{test.name}
+				</span>
+			</p>
+			<p>{test.air_date}</p>
+		</hgroup>
+	</Card>
 </main>
 
 <style>
-	div {
+	.image {
 		width: 300px;
 		height: fit-content;
 	}

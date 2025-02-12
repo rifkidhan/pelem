@@ -24,6 +24,7 @@ html,
 		scrollbar-color: hsl(var(--pf-primary)) transparent;
 		scrollbar-gutter: stable;
 	}
+
 	interpolate-size: allow-keywords;
 }
 

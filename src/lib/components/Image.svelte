@@ -10,6 +10,7 @@
 		src?: string;
 		alt: string;
 		full?: boolean;
+		original?: boolean;
 	}
 
 	let {
@@ -19,6 +20,7 @@
 		alt,
 		class: className,
 		full,
+		original,
 		...attrs
 	}: ImageProps = $props();
 
@@ -33,14 +35,14 @@
 		return STILL_SIZES;
 	});
 
-	let width = $derived(allSizes[1]);
+	let width = $derived(allSizes[0]);
 
 	let height = $derived.by(() => {
-		if (type === "backdrop") {
-			return width / 1.78;
+		if (type === "poster") {
+			return width * 1.5;
 		}
 
-		return width * 1.5;
+		return width / 1.78;
 	});
 
 	let img_url = $derived(src ? `${IMAGE_URL}w${width}${src}` : "");
@@ -61,7 +63,7 @@
 		}).join(", ").toString();
 	});
 
-	let loading = $state(true);
+	let loading = $state(type == "backdrop" ? false : true);
 
 	let error = $state(false);
 </script>
@@ -113,7 +115,7 @@
 		aspect-ratio: 2 / 3;
 	}
 
-	.backdrop:not(.full) {
+	:is(.backdrop, .still):not(.full) {
 		aspect-ratio: 16 / 9;
 	}
 

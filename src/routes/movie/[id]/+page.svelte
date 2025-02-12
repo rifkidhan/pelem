@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from "./$types";
 
-	import { Card, Carousel, Image, ListItem, MediaGrid, OfficialSite } from "$lib/components";
+	import { Card, Carousel, Link, ListItem, MediaGrid, OfficialSite } from "$lib/components";
 	import {
 		formatCountryName,
 		formatCurrency,
@@ -13,18 +13,6 @@
 	let { data }: PageProps = $props();
 
 	let movie = $derived(data.movie);
-
-	let officialSiteShow = $derived.by(() => {
-		const ids = movie.external_ids;
-
-		if (
-			isNull(movie.homepage) || isNull(ids.facebook_id) || isNull(ids.instagram_id)
-			|| isNull(ids.twitter_id)
-		) {
-			return false;
-		}
-		return true;
-	});
 </script>
 
 {#if !isNull(movie.credits.cast)}
@@ -37,14 +25,15 @@
 		<Carousel label="Cast">
 			{#each movie.credits.cast.slice(0, 9) as cast (cast.id)}
 				<Card
-					id={String(cast.id)}
 					img={cast.profile_path}
 					url={`/people/${cast.id}`}
 					title={cast.name}
-					type="people"
 					aria-roledescription="item"
+					shadow
 				>
-					<p class="cast-role">{cast.character}</p>
+					{#snippet content()}
+						<p class="cast-role">{cast.character}</p>
+					{/snippet}
 				</Card>
 			{/each}
 			<li class="view-more-card" aria-roledescription="item">
@@ -81,16 +70,14 @@
 				{formatLanguage(movie.original_language)}
 			</ListItem>
 		{/if}
-		{#if officialSiteShow}
-			<ListItem heading="Official site">
-				<OfficialSite
-					homepage={movie.homepage}
-					twitter_id={movie.external_ids.twitter_id}
-					facebook_id={movie.external_ids.facebook_id}
-					instagram_id={movie.external_ids.instagram_id}
-				/>
-			</ListItem>
-		{/if}
+		<ListItem heading="Official site">
+			<OfficialSite
+				homepage={movie.homepage}
+				twitter_id={movie.external_ids.twitter_id}
+				facebook_id={movie.external_ids.facebook_id}
+				instagram_id={movie.external_ids.instagram_id}
+			/>
+		</ListItem>
 
 		{#if !isNull(movie.production_countries)}
 			<ListItem heading="Production countries">
@@ -137,15 +124,12 @@
 				Belongs To Collection
 			</span>
 		</h2>
-		<div class="collection">
-			<Image
-				src={movie.belongs_to_collection.poster_path}
-				alt={movie.belongs_to_collection.name}
-			/>
-			<div>
-				{movie.belongs_to_collection.name}
-			</div>
-		</div>
+
+		<Card
+			as="div"
+			title={movie.belongs_to_collection.name}
+			img={movie.belongs_to_collection.poster_path}
+		/>
 	</section>
 {/if}
 
@@ -155,9 +139,10 @@
 			Media
 		</span>
 	</h2>
-	<div>
-		<a href={`/movie/${movie.id}/media`}>View more media</a>
-	</div>
+	{#if movie.images.length > 3}
+		<MediaGrid title={movie.title} photos={movie.images.slice(0, 7)} />
+	{/if}
+	<Link href={`/movie/${movie.id}/media`}>View all media.</Link>
 </section>
 
 {#if !isNull(movie.recommendations.results)}
@@ -176,6 +161,7 @@
 					title={recommend.title}
 					rating={recommend.vote_average}
 					aria-roledescription="item"
+					shadow
 				/>
 			{/each}
 		</Carousel>
@@ -184,7 +170,6 @@
 
 <style>
 	.cast-role {
-		line-height: 1.2;
 		font-size: var(--pf-text-sm);
 	}
 
@@ -197,7 +182,7 @@
 	.view-more-card {
 		display: block;
 		box-shadow: var(--pf-shadow-md);
-		border-radius: 0.5rem;
+		border-radius: var(--pf-radius);
 		transition: box-shadow 150ms ease-in-out;
 		user-select: none;
 
@@ -212,11 +197,5 @@
 				text-decoration: underline;
 			}
 		}
-	}
-
-	.collection {
-		display: grid;
-		grid-template-columns: 1fr 5fr;
-		gap: 2rem;
 	}
 </style>

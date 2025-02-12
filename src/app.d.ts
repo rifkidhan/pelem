@@ -14,7 +14,7 @@ declare global {
 			};
 		}
 		interface PageData {
-			meta: {
+			meta?: {
 				title?: string;
 				description?: string;
 			};

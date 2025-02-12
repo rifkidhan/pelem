@@ -148,7 +148,7 @@
 			width: 12rem;
 			align-self: center;
 			overflow: hidden;
-			border-radius: 1.8rem;
+			border-radius: var(--pf-radius);
 			border: solid 1px;
 			display: block;
 			appearance: none;

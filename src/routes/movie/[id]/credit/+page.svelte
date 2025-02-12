@@ -27,13 +27,16 @@
 	<ul class="credits">
 		{#each casts as item}
 			<Card
-				id={String(item.id)}
 				title={item.name}
 				img={item.profile_path}
+				shadow
 				url={`/people/${item.id}`}
-				type="people"
+				class="custom-card"
 			>
-				<p class="cast-role">{item.character}</p>
+				<div>
+					<p class="card-title">{item.name}</p>
+					<p class="cast-role">{item.character}</p>
+				</div>
 			</Card>
 		{/each}
 	</ul>
@@ -52,13 +55,16 @@
 			<ul class="credits">
 				{#each crew(cat) as item}
 					<Card
-						id={String(item.id)}
 						title={item.name}
 						img={item.profile_path}
+						shadow
 						url={`/people/${item.id}`}
-						type="people"
+						class="custom-card"
 					>
-						<p class="cast-role">{item.job}</p>
+						<div>
+							<p class="card-title">{item.name}</p>
+							<p class="cast-role">{item.job}</p>
+						</div>
 					</Card>
 				{/each}
 			</ul>
@@ -72,9 +78,22 @@
 		grid-template-columns: repeat(3, 1fr);
 		gap: 1rem;
 
-		@media (max-width: 768px) {
+		@media (max-width: 476px) {
 			grid-template-columns: repeat(2, 1fr);
 		}
+	}
+
+	.card-title {
+		font-weight: 500;
+
+		:global(.custom-card):hover & {
+			text-decoration: underline;
+			text-underline-offset: 2px;
+		}
+	}
+
+	.cast-role {
+		font-size: var(--pf-text-sm);
 	}
 
 	.subsection {
