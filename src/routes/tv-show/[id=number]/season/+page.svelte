@@ -2,7 +2,8 @@
 	import type { PageProps } from './$types';
 
 	import { Card } from '$lib/components';
-	import { formatDate } from '$lib/utils/format';
+	import { formatDate, formatPlural } from '$lib/utils/format';
+	import { EPISODE_SUFFIXES } from '$lib/utils/constants';
 
 	let { data }: PageProps = $props();
 
@@ -25,7 +26,7 @@
 					{item.name}
 				</span>
 			</h2>
-			<p>{item.episode_count} episodes</p>
+			<p>{item.episode_count} {formatPlural(item.episode_count, EPISODE_SUFFIXES)}</p>
 			{#if item.air_date}
 				<p>Premiered on {formatDate(item.air_date)}</p>
 			{/if}

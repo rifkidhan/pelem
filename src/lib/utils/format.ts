@@ -45,7 +45,13 @@ export const formatLanguage = (lang: string) => {
 	return language.of(lang);
 };
 
-export const formatPlural = () => {
-	const cardinalNumber = new Intl.PluralRules('en-US').select(2);
-	return cardinalNumber;
+/**
+ * format plural using cardinal format
+ * suffixes key is 'one' and 'other'
+ */
+export const formatPlural = (length: number, suffixes: Record<string, string>) => {
+	const rule = new Intl.PluralRules('en-US').select(length);
+	const suffix = suffixes[rule];
+
+	return suffix;
 };

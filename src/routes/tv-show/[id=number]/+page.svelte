@@ -11,7 +11,8 @@
 		OfficialSite,
 		Truncate
 	} from '$lib/components';
-	import { formatCountryName, formatDate, formatLanguage } from '$lib/utils/format';
+	import { formatCountryName, formatDate, formatLanguage, formatPlural } from '$lib/utils/format';
+	import { EPISODE_SUFFIXES } from '$lib/utils/constants';
 	import isNull from '$lib/utils/isNull';
 
 	let { data }: PageProps = $props();
@@ -92,7 +93,7 @@
 		</div>
 
 		<div>
-			<Link href={`/tv-show/${tv.id}/season`}>View list season.</Link>
+			<Link href={`/tv-show/${tv.id}/season`}>View all seasons</Link>
 		</div>
 	</section>
 {/if}
@@ -114,7 +115,10 @@
 				{#snippet content()}
 					<div class="cast-role">
 						<span>{cast.roles[0].character}</span>
-						<span class="role-count">{cast.total_episode_count} episodes</span>
+						<span class="role-count"
+							>{cast.total_episode_count}
+							{formatPlural(cast.total_episode_count, EPISODE_SUFFIXES)}</span
+						>
 					</div>
 				{/snippet}
 			</Card>
@@ -198,15 +202,17 @@
 	</ul>
 </section>
 
-<section>
-	<h2 class="section-title">
-		<span>Media</span>
-	</h2>
-	{#if tv.images.length > 3}
-		<MediaGrid title={tv.name} photos={tv.images.slice(0, 7)} />
-	{/if}
-	<Link href={`/tv-show/${tv.id}/media`}>View all media.</Link>
-</section>
+{#if !isNull(tv.images) && !isNull(tv.videos.results)}
+	<section>
+		<h2 class="section-title">
+			<span>Media</span>
+		</h2>
+		{#if tv.images.length > 3}
+			<MediaGrid title={tv.name} photos={tv.images.slice(0, 7)} />
+		{/if}
+		<Link href={`/tv-show/${tv.id}/media`}>View all media</Link>
+	</section>
+{/if}
 
 {#if !isNull(tv.recommendations.results)}
 	<section>

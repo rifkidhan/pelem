@@ -3,7 +3,8 @@
 
 	import { Card, Carousel, Icon, Image, ListItem } from '$lib/components';
 	import OfficialSite from '$lib/components/OfficialSite.svelte';
-	import { formatDate, getYear } from '$lib/utils/format';
+	import { formatDate, getYear, formatPlural } from '$lib/utils/format';
+	import { EPISODE_SUFFIXES } from '$lib/utils/constants';
 	import isNull from '$lib/utils/isNull';
 	import { groupBy } from '$lib/utils/array';
 
@@ -153,7 +154,10 @@
 												{/if}
 											</span>
 											{#if role.episode_count}
-												<span>{role.episode_count} episode</span>
+												<span
+													>{role.episode_count}
+													{formatPlural(role.episode_count, EPISODE_SUFFIXES)}</span
+												>
 											{/if}
 										</li>
 									{/each}
@@ -200,7 +204,10 @@
 														{/if}
 													</span>
 													{#if job.episode_count}
-														<span>{job.episode_count} episode</span>
+														<span>
+															{job.episode_count}
+															{formatPlural(job.episode_count, EPISODE_SUFFIXES)}
+														</span>
 													{/if}
 												</li>
 											{/each}

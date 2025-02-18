@@ -49,10 +49,11 @@
 	:where(main) {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 		gap: 3rem;
 		inline-size: 100%;
 		margin-block-end: 3rem;
-		min-block-size: calc(100dvh - var(--pf-header-height));
+		min-block-size: calc(100dvh - (var(--pf-header-height) * 2));
 	}
 
 	:where(section) {

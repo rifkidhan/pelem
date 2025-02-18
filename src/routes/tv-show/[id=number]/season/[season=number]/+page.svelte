@@ -11,120 +11,120 @@
 	let season = $derived(data.season);
 
 	let modal = $state([]) as Modal[];
-
-	$inspect(season);
 </script>
 
-{#if !isNull(season.overview)}
+{#key season.id}
+	{#if !isNull(season.overview)}
+		<section>
+			<h2 class="section-title">
+				<span>Overview</span>
+			</h2>
+			<p>
+				{season.overview}
+			</p>
+		</section>
+	{/if}
+
 	<section>
 		<h2 class="section-title">
-			<span>Overview</span>
+			<span>List of episodes</span>
 		</h2>
-		<p>
-			{season.overview}
-		</p>
-	</section>
-{/if}
-
-<section>
-	<h2 class="section-title">
-		<span>List of episodes</span>
-	</h2>
-	<ul class="episodes">
-		{#each season.episodes as item, i}
-			<li>
-				<details name="episode" open={i === 0}>
-					<Card
-						as="summary"
-						title={item.name ?? `Episode ${item.episode_number}`}
-						img={item.still_path}
-						img_type="still"
-					>
-						<h3>
-							<span>{item.episode_number}.</span>
-							<span>
-								{item.name}
-							</span>
-						</h3>
-						{#if item.air_date}
-							<p>
-								Premiered on {formatDate(item.air_date)}.
-							</p>
-						{/if}
-					</Card>
-					<div class="episode-details">
-						<div class="overview">
-							<h4>Overview</h4>
-							<p>
-								{#if !isNull(item.overview)}
-									{item.overview}
+		<ul class="episodes">
+			{#each season.episodes as item, i}
+				<li>
+					<details name="episode" open={i === 0}>
+						<Card
+							as="summary"
+							title={item.name ?? `Episode ${item.episode_number}`}
+							img={item.still_path}
+							img_type="still"
+						>
+							<h3>
+								<span>{item.episode_number}.</span>
+								<span>
+									{item.name}
+								</span>
+							</h3>
+							{#if item.air_date}
+								<p>
+									Premiered on {formatDate(item.air_date)}.
+								</p>
+							{/if}
+						</Card>
+						<div class="episode-details">
+							<div class="overview">
+								<h4>Overview</h4>
+								<p>
+									{#if !isNull(item.overview)}
+										{item.overview}
+									{:else}
+										No overview.
+									{/if}
+								</p>
+							</div>
+							<ul class="credits">
+								<h4>Guest Stars</h4>
+								{#if !isNull(item.guest_stars)}
+									{#each item.guest_stars as cast}
+										<li>
+											<Link href={`/people/${cast.id}`}>
+												{cast.name}
+											</Link>
+										</li>
+									{/each}
 								{:else}
-									No overview.
+									<li>No guest star on this episode.</li>
 								{/if}
-							</p>
+							</ul>
+							<ul class="credits">
+								<h4>Crew</h4>
+								{#if !isNull(item.crew)}
+									{#each item.crew as crew}
+										<li>
+											<Link href={`/people/${crew.id}`}>
+												{crew.name}
+											</Link>
+										</li>
+									{/each}
+								{:else}
+									<li>No crew provided.</li>
+								{/if}
+							</ul>
 						</div>
-						<ul class="credits">
-							<h4>Guest Stars</h4>
-							{#if !isNull(item.guest_stars)}
-								{#each item.guest_stars as cast}
-									<li>
-										<Link href={`/people/${cast.id}`}>
-											{cast.name}
-										</Link>
-									</li>
-								{/each}
-							{:else}
-								<li>No guest star on this episode.</li>
-							{/if}
-						</ul>
-						<ul class="credits">
-							<h4>Crew</h4>
-							{#if !isNull(item.crew)}
-								{#each item.crew as crew}
-									<li>
-										<Link href={`/people/${crew.id}`}>
-											{crew.name}
-										</Link>
-									</li>
-								{/each}
-							{:else}
-								<li>No crew provided.</li>
-							{/if}
-						</ul>
-					</div>
-				</details>
-			</li>
-		{/each}
-	</ul>
-</section>
-
-{#if !isNull(season.videos.results)}
-	<section>
-		<h2 class="section-title">
-			<span>Videos</span>
-		</h2>
-
-		<div class="videos">
-			{#each season.videos.results as video, i}
-				{#if video.key}
-					<div
-						class="video"
-						title={video.name}
-						use:ytImage={{ key: video.key ?? '', quality: 'hqdefault' }}
-						role="listitem"
-					>
-						<button type="button" onclick={modal[i].openModal}>
-							<span class="sr-only">Play: {video.name}</span>
-						</button>
-					</div>
-					<Modal title={video.name} bind:this={modal[i]}>
-						<YTEmbed videoKey={video.key} title={video.name} />
-					</Modal>
-				{/if}
+					</details>
+				</li>
 			{/each}
-		</div>
+		</ul>
 	</section>
-{/if}
+
+	{#if !isNull(season.videos.results)}
+		<section>
+			<h2 class="section-title">
+				<span>Videos</span>
+			</h2>
+
+			<div class="videos">
+				{#each season.videos.results as video, i}
+					{#if video.key}
+						<div
+							class="video"
+							title={video.name}
+							use:ytImage={{ key: video.key ?? '', quality: 'hqdefault' }}
+							role="listitem"
+						>
+							<button type="button" onclick={modal[i].openModal}>
+								<span class="sr-only">Play: {video.name}</span>
+							</button>
+						</div>
+						<Modal title={video.name} bind:this={modal[i]}>
+							<YTEmbed videoKey={video.key} title={video.name} />
+						</Modal>
+					{/if}
+				{/each}
+			</div>
+		</section>
+	{/if}
+{/key}
 
 <style>
 	.episodes {

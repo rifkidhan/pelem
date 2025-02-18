@@ -2,8 +2,6 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	import { browser } from '$app/environment';
-	import { tick } from 'svelte';
-	import { on } from 'svelte/events';
 	import Icon from './icon/Icon.svelte';
 
 	interface TruncateProps extends HTMLAttributes<HTMLDivElement> {
@@ -14,21 +12,20 @@
 
 	let truncate = $state(true);
 	let open = $state(false);
+	let element: HTMLElement | undefined = $state();
 
-	const truncation = (node: HTMLElement) => {
-		const listen = on(window, 'resize', () => {
-			tick().then(() => {
-				truncate = node.scrollHeight > node.clientHeight + 1;
-			});
-		});
+	// const truncation = (node: HTMLElement) => {
+	// 	$effect(() => {
+	// 		if (browser) {
+	// 			truncate = node.scrollHeight > node.clientHeight + 1;
+	// 		}
+	// 	});
+	// };
 
-		$effect(() => {
-			if (browser) {
-				truncate = node.scrollHeight > node.clientHeight + 1;
-			}
-			return () => listen();
-		});
-	};
+	$effect(() => {
+		if (!element) return;
+		truncate = element.scrollHeight > element.clientHeight + 1;
+	});
 </script>
 
 <div
@@ -37,10 +34,10 @@
 	style:--pf-truncate={length}
 	{...attrs}
 >
-	<div use:truncation data-expanded={truncate && open}>
+	<div bind:this={element} data-expanded={truncate && open}>
 		{@render children?.()}
 	</div>
-	{#if browser && truncate}
+	{#if truncate}
 		<button onclick={() => (open = !open)} aria-pressed={open}>
 			<span>
 				{open ? 'View Less' : 'View More'}
@@ -69,9 +66,9 @@
 						0deg,
 						transparent 0,
 						transparent calc(var(--line-height)),
-						#000 calc(var(--line-height))
+						black calc(var(--line-height))
 					),
-					linear-gradient(279deg, transparent 0, transparent 20%, #000);
+					linear-gradient(279deg, transparent 0, transparent 13ch, black);
 
 				&[data-expanded='true'] {
 					max-height: fit-content;
@@ -84,10 +81,13 @@
 		button {
 			color: hsl(var(--pf-primary));
 			display: inline-flex;
-			align-items: center;
 			position: absolute;
+			align-items: flex-end;
+			justify-content: flex-end;
 			right: 0;
 			bottom: 0;
+			inline-size: 100%;
+			block-size: 100%;
 
 			&[aria-pressed='true'] {
 				bottom: 0;

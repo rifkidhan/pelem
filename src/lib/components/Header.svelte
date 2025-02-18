@@ -18,6 +18,8 @@
 			url: '/people'
 		}
 	];
+
+	let mobileNav: HTMLElement | undefined = $state();
 </script>
 
 <header>
@@ -53,7 +55,7 @@
 			</div>
 		</div>
 	</nav>
-	<div id="mobile-navigation" popover="auto">
+	<div id="mobile-navigation" popover="auto" bind:this={mobileNav}>
 		<div class="head">
 			<Button
 				size="square"
@@ -69,7 +71,17 @@
 			<ul>
 				{#each NAVIGATIONS as nav}
 					<li>
-						<a href={nav.url}>{nav.title}</a>
+						<a
+							class="sidenav-item"
+							href={nav.url}
+							onclick={() => {
+								if (!mobileNav) return;
+
+								mobileNav.hidePopover();
+							}}
+						>
+							{nav.title}
+						</a>
 					</li>
 				{/each}
 			</ul>
@@ -137,19 +149,23 @@
 		inset: unset;
 	}
 	#mobile-navigation {
-		inline-size: 60dvw;
+		inline-size: 70dvw;
 		block-size: 100dvh;
 		right: 0;
 		top: 0;
 		box-shadow: var(--pf-shadow-md);
-		padding-inline: 0.25rem;
+		padding-inline: 0.5rem;
 
-		.head {
+		& > .head {
 			display: flex;
 			gap: 0.5rem;
 			height: var(--pf-header-height);
 			align-items: center;
 			justify-content: flex-end;
+		}
+
+		& > nav {
+			font-size: var(--pf-text-lg);
 		}
 	}
 </style>

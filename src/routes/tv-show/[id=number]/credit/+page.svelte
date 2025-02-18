@@ -3,6 +3,8 @@
 
 	import { Card } from '$lib/components';
 	import { groupBy } from '$lib/utils/array';
+	import { formatPlural } from '$lib/utils/format';
+	import { EPISODE_SUFFIXES } from '$lib/utils/constants';
 
 	let { data }: PageProps = $props();
 
@@ -37,7 +39,10 @@
 					{#each item.roles as role}
 						<li class="cast-role">
 							<span>{role.character}</span>
-							<span>({role.episode_count} episodes)</span>
+							<span>
+								({role.episode_count}
+								{formatPlural(role.episode_count, EPISODE_SUFFIXES)})
+							</span>
 						</li>
 					{/each}
 				</ul>
@@ -67,8 +72,14 @@
 						<p class="card-title">{item.name}</p>
 						<ul>
 							{#each item.jobs as job}
-								<li>
-									<p class="cast-role">{job.job} ({job.episode_count} episodes)</p>
+								<li class="cast-role">
+									<span>
+										{job.job}
+									</span>
+									<span>
+										({job.episode_count}
+										{formatPlural(job.episode_count, EPISODE_SUFFIXES)})
+									</span>
 								</li>
 							{/each}
 						</ul>
