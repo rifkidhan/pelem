@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { HTMLAttributes } from "svelte/elements";
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { browser } from "$app/environment";
-	import { tick } from "svelte";
-	import { on } from "svelte/events";
-	import Icon from "./icon/Icon.svelte";
+	import { browser } from '$app/environment';
+	import { tick } from 'svelte';
+	import { on } from 'svelte/events';
+	import Icon from './icon/Icon.svelte';
 
 	interface TruncateProps extends HTMLAttributes<HTMLDivElement> {
 		length?: number;
@@ -16,15 +16,15 @@
 	let open = $state(false);
 
 	const truncation = (node: HTMLElement) => {
-		const listen = on(window, "resize", () => {
+		const listen = on(window, 'resize', () => {
 			tick().then(() => {
-				truncate = node.scrollHeight > (node.clientHeight + 1);
+				truncate = node.scrollHeight > node.clientHeight + 1;
 			});
 		});
 
 		$effect(() => {
 			if (browser) {
-				truncate = node.scrollHeight > (node.clientHeight + 1);
+				truncate = node.scrollHeight > node.clientHeight + 1;
 			}
 			return () => listen();
 		});
@@ -32,7 +32,7 @@
 </script>
 
 <div
-	class={["truncate", className]}
+	class={['truncate', className]}
 	data-truncated={truncate}
 	style:--pf-truncate={length}
 	{...attrs}
@@ -41,9 +41,9 @@
 		{@render children?.()}
 	</div>
 	{#if browser && truncate}
-		<button onclick={() => open = !open} aria-pressed={open}>
+		<button onclick={() => (open = !open)} aria-pressed={open}>
 			<span>
-				{open ? "View Less" : "View More"}
+				{open ? 'View Less' : 'View More'}
 			</span>
 			<Icon icon="chevron-down" />
 		</button>
@@ -71,12 +71,7 @@
 						transparent calc(var(--line-height)),
 						#000 calc(var(--line-height))
 					),
-					linear-gradient(
-					279deg,
-					transparent 0,
-					transparent 20%,
-					#000
-				);
+					linear-gradient(279deg, transparent 0, transparent 20%, #000);
 
 				&[data-expanded='true'] {
 					max-height: fit-content;

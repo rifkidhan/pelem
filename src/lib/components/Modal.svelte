@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { HTMLDialogAttributes } from "svelte/elements";
+	import type { HTMLDialogAttributes } from 'svelte/elements';
 
-	import Button from "./Button.svelte";
-	import Icon from "./icon/Icon.svelte";
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
 
 	interface ModalProps extends HTMLDialogAttributes {
 		title?: string;
@@ -25,10 +25,7 @@
 	};
 </script>
 
-<dialog
-	bind:this={modal}
-	{...attrs}
->
+<dialog bind:this={modal} {...attrs}>
 	{#if open}
 		<div class="wrapper">
 			<div class="top">

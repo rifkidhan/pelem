@@ -1,7 +1,16 @@
 @font-face {
-	font-family: 'Geist Sans';
+	font-family: 'Geist';
 	font-style: normal;
 	font-display: swap;
 	font-weight: 100 900;
 	src: url('/fonts/geist.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Geist Fallback';
+	src: local('Arial');
+	ascent-override: 95.94%;
+	descent-override: 28.16%;
+	line-gap-override: 0%;
+	size-adjust: 104.76%;
 }

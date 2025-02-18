@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ClassValue } from "svelte/elements";
-	import Image from "./Image.svelte";
+	import type { ClassValue } from 'svelte/elements';
+	import Image from './Image.svelte';
 
 	interface BannerProps {
 		poster_path?: string;
@@ -10,16 +10,10 @@
 		class?: ClassValue;
 	}
 
-	let {
-		backdrop_path,
-		poster_path,
-		page_name,
-		content_title,
-		...props
-	}: BannerProps = $props();
+	let { backdrop_path, poster_path, page_name, content_title, ...props }: BannerProps = $props();
 </script>
 
-<div class={["banner", props.class]}>
+<div class={['banner', props.class]}>
 	<div class="backdrop-banner">
 		{#if backdrop_path}
 			<Image src={backdrop_path} type="backdrop" priority full alt="" aria-hidden="true" />

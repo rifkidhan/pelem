@@ -1,36 +1,37 @@
 <script lang="ts">
-	import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
-	import type { Snippet } from "svelte";
-	import type { HTMLAttributes } from "svelte/elements";
+	import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
+	import type { Snippet } from 'svelte';
+	import type { ClassValue } from 'svelte/elements';
 
-	import { browser } from "$app/environment";
-	import EmblaCarousel from "embla-carousel";
-	import Button from "./Button.svelte";
-	import Icon from "./icon/Icon.svelte";
+	import EmblaCarousel from 'embla-carousel';
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
 
-	interface CarouselProps extends HTMLAttributes<HTMLElement> {
+	interface CarouselProps {
 		label: string;
-		children: Snippet;
+		children?: Snippet;
+		class?: ClassValue;
+		loading?: boolean;
 	}
 
-	let { label, class: className, children }: CarouselProps = $props();
+	let { label, class: className, loading, children }: CarouselProps = $props();
 
-	let viewport = $state() as HTMLElement;
+	let viewport: HTMLElement | undefined = $state();
 	let api: EmblaCarouselType | undefined = $state();
 	let prevButtonDisable = $state(true);
 	let nextButtonDisable = $state(false);
+	let isScrollable = $state(true);
 	let progress = $state(0);
 
-	const embla_options: EmblaOptionsType = {
-		align: "center",
+	let embla_options: EmblaOptionsType = {
+		align: 'center',
 		loop: false,
-		slidesToScroll: "auto"
+		slidesToScroll: 'auto'
 	};
 
 	$effect(() => {
-		if (browser) {
-			api = EmblaCarousel(viewport, embla_options);
-		}
+		if (!viewport) return;
+		api = EmblaCarousel(viewport, embla_options);
 
 		return () => {
 			if (api) {
@@ -47,7 +48,7 @@
 			nextButtonDisable = !e.canScrollNext();
 		};
 
-		api.on("select", buttonState).on("init", buttonState).on("reInit", buttonState);
+		api.on('select', buttonState).on('init', buttonState).on('reInit', buttonState);
 	});
 
 	$effect(() => {
@@ -58,10 +59,22 @@
 		};
 
 		api
-			.on("init", progressState)
-			.on("reInit", progressState)
-			.on("scroll", progressState)
-			.on("slideFocus", progressState);
+			.on('init', progressState)
+			.on('reInit', progressState)
+			.on('scroll', progressState)
+			.on('slideFocus', progressState);
+	});
+
+	$effect(() => {
+		if (!api) return;
+
+		const activeWhenHasScrollable = (e: EmblaCarouselType) => {
+			isScrollable = !loading && e.internalEngine().scrollSnaps.length > 1;
+			e.reInit({ active: isScrollable });
+		};
+
+		api.on('resize', activeWhenHasScrollable);
+		activeWhenHasScrollable(api);
 	});
 
 	const prevOnclick = () => {
@@ -73,40 +86,53 @@
 </script>
 
 <div
-	class={["carousel", className]}
+	class={['carousel', className]}
 	aria-roledescription="carousel"
 	aria-label={`${label} Carousel`}
 >
 	<div class="viewport" bind:this={viewport} aria-label={`${label} carousel viewport`}>
 		<ul class="container" role="group" aria-live="polite" aria-label="Items carousel">
-			{@render children()}
+			{#if loading}
+				{#each { length: 8 }, i}
+					<li id={`skeleton-${i}`} class="card-skeleton">
+						<span></span>
+						<span></span>
+						<span></span>
+					</li>
+				{/each}
+			{/if}
+			{@render children?.()}
 		</ul>
 	</div>
-	<div class="controls">
-		<div class="buttons">
-			<Button
-				id="prev"
-				variant="ghost"
-				size="square"
-				aria-label="previous slide"
-				onclick={prevOnclick}
-				disabled={prevButtonDisable}
-			>
-				<Icon icon="chevron-left" hidden />
-			</Button>
-			<Button
-				id="next"
-				variant="ghost"
-				size="square"
-				aria-label="next slide"
-				onclick={nextOnclick}
-				disabled={nextButtonDisable}
-			>
-				<Icon icon="chevron-right" hidden />
-			</Button>
+	{#if isScrollable}
+		<div class="controls">
+			<div class="buttons">
+				<Button
+					id="prev"
+					type="button"
+					variant="secondary"
+					size="square"
+					aria-label="previous slide"
+					onclick={prevOnclick}
+					disabled={prevButtonDisable}
+				>
+					<Icon icon="chevron-left" hidden />
+				</Button>
+				<Button
+					id="next"
+					type="button"
+					variant="secondary"
+					size="square"
+					aria-label="next slide"
+					onclick={nextOnclick}
+					disabled={nextButtonDisable}
+				>
+					<Icon icon="chevron-right" hidden />
+				</Button>
+			</div>
+			<progress value={progress} max={1} class="progress-bar"></progress>
 		</div>
-		<progress value={progress} max={1} class="progress-bar"></progress>
-	</div>
+	{/if}
 </div>
 
 <style>
@@ -130,6 +156,42 @@
 		touch-action: pan-y pinch-zoom;
 		padding-block-start: calc(0.125rem + 1.2cqi);
 		padding-block-end: calc(0.125rem + 3cqi);
+	}
+
+	.card-skeleton {
+		inline-size: 100%;
+		background-color: hsl(var(--pf-accent-5));
+		border-radius: var(--pf-radius);
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		& > * {
+			animation: var(--pf-animation-pulse);
+			background-color: hsl(var(--pf-accent-50));
+			border-radius: var(--pf-radius);
+			overflow: hidden;
+		}
+
+		& > :nth-child(1) {
+			inline-size: 100%;
+			block-size: clamp(150px, 25cqi + 2rem, 289px);
+		}
+
+		& > :nth-child(2) {
+			inline-size: 6ch;
+			block-size: 2ch;
+			margin-block-start: 0.5rem;
+			margin-inline: 0.5rem;
+		}
+
+		& > :nth-child(3) {
+			inline-size: 10ch;
+			block-size: 4ch;
+			margin-block-end: 0.5rem;
+			margin-inline: 0.5rem;
+		}
 	}
 
 	.controls {

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PageProps } from "./$types";
+	import type { PageProps } from './$types';
 
-	import { ytImage } from "$lib/actions/images.svelte";
-	import { Banner, MediaGrid, Modal, YTEmbed } from "$lib/components";
+	import { ytImage } from '$lib/actions/images.svelte';
+	import { MediaGrid, Modal, YTEmbed } from '$lib/components';
 
 	let { data }: PageProps = $props();
 
@@ -13,49 +13,35 @@
 	let modal = $state([]) as Modal[];
 </script>
 
-<main>
-	<Banner
-		page_name="Media"
-		poster_path={data.tv.poster_path}
-		backdrop_path={data.tv.backdrop_path}
-		content_title={title}
-	/>
+<section>
+	<h2 class="section-title">
+		<span> Photos </span>
+	</h2>
+	<MediaGrid {photos} {title} />
+</section>
 
-	<section>
-		<h2 class="section-title">
-			<span>
-				Photos
-			</span>
-		</h2>
-		<MediaGrid {photos} {title} />
-	</section>
-
-	<section>
-		<h2 class="section-title">
-			<span>
-				Videos
-			</span>
-		</h2>
-		<div class="videos">
-			{#each videos as video, i}
-				{#if video.key}
-					<div
-						class="video"
-						title={video.name}
-						use:ytImage={{ key: video.key ?? "", quality: "hqdefault" }}
-					>
-						<button type="button" onclick={modal[i].openModal}>
-							<span class="sr-only">Play: {title}</span>
-						</button>
-					</div>
-					<Modal title={video.name} bind:this={modal[i]}>
-						<YTEmbed videoKey={video.key} title={video.name} />
-					</Modal>
-				{/if}
-			{/each}
-		</div>
-	</section>
-</main>
+<section>
+	<h2 class="section-title">
+		<span> Videos </span>
+	</h2>
+	<div class="videos" role="list">
+		{#each videos as video, i}
+			<div
+				class="video"
+				title={video.name}
+				use:ytImage={{ key: video.key, quality: 'hqdefault' }}
+				role="listitem"
+			>
+				<button type="button" onclick={modal[i].openModal}>
+					<span class="sr-only">Play: {title}</span>
+				</button>
+			</div>
+			<Modal title={video.name} bind:this={modal[i]}>
+				<YTEmbed videoKey={video.key} title={video.name} />
+			</Modal>
+		{/each}
+	</div>
+</section>
 
 <style>
 	.videos {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
+	import type { Snippet } from 'svelte';
 
 	interface ListItemProps {
 		as?: string;
@@ -7,12 +7,12 @@
 		children: Snippet;
 	}
 
-	let { as = "li", heading, children }: ListItemProps = $props();
+	let { as = 'li', heading, children }: ListItemProps = $props();
 </script>
 
 <svelte:element this={as} class="list-item">
 	<div class="heading">{heading}</div>
-	<div class="content">
+	<div class="content list-with-dot">
 		{@render children()}
 	</div>
 </svelte:element>
@@ -28,13 +28,7 @@
 		}
 
 		.content {
-			display: flex;
 			flex-wrap: wrap;
-
-			& > :global(span):not(:last-child)::after {
-				content: '•';
-				margin-inline: 0.5rem;
-			}
 		}
 	}
 </style>

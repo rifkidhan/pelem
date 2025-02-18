@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SvelteDate } from "svelte/reactivity";
+	import { SvelteDate } from 'svelte/reactivity';
 
 	const date = new SvelteDate().getFullYear();
 </script>
@@ -17,7 +17,8 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					TMDB</a>
+					TMDB</a
+				>
 			</div>
 		</div>
 	</div>

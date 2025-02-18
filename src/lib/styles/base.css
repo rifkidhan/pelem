@@ -13,7 +13,7 @@ html,
 :host {
 	line-height: 1.5;
 	-webkit-text-size-adjust: 100%;
-	font-family: 'Geist Sans', system-ui;
+	font-family: 'Geist', 'Geist Fallback', system-ui;
 	tab-size: 4;
 	font-feature-settings: normal;
 	font-variation-settings: normal;

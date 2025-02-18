@@ -1,23 +1,38 @@
 <script lang="ts">
-	import type { HTMLButtonAttributes } from "svelte/elements";
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	interface ButtonProps extends HTMLButtonAttributes {
-		variant?: "primary" | "secondary" | "outline" | "ghost";
-		size?: "sm" | "md" | "lg" | "square";
+	interface ButtonProps extends HTMLAttributes<HTMLElement> {
+		variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'theme';
+		size?: 'sm' | 'md' | 'lg' | 'square';
+		href?: string;
+		external?: boolean;
+		type?: 'submit' | 'reset' | 'button' | undefined | null;
+		popovertarget?: string | undefined | null;
+		popovertargetaction?: 'toggle' | 'show' | 'hide' | undefined | null;
+		disabled?: boolean;
 	}
 
 	let {
-		variant = "primary",
-		size = "md",
+		variant = 'primary',
+		size = 'md',
 		children,
 		class: className,
+		href,
+		external,
 		...attrs
 	}: ButtonProps = $props();
 </script>
 
-<button class={["pf-button", variant, size, className]} {...attrs}>
+<svelte:element
+	this={href ? 'a' : 'button'}
+	{href}
+	target={href && external ? '_blank' : undefined}
+	rel={href && external ? 'noopener noreferrer' : undefined}
+	class={['pf-button', variant, size, className]}
+	{...attrs}
+>
 	{@render children?.()}
-</button>
+</svelte:element>
 
 <style>
 	.pf-button {
@@ -45,16 +60,16 @@
 		color: hsl(var(--pf-accent-5));
 
 		&:hover {
-			background-color: hsla(var(--pf-accent-90), 0.5);
+			background-color: hsl(var(--pf-accent-80));
 		}
 	}
 
 	.secondary {
-		background-color: hsl(var(--pf-accent-20));
+		background-color: hsl(var(--pf-accent-10));
 		color: hsl(var(--pf-accent-95));
 
 		&:hover {
-			background-color: hsl(var(--pf-accent-30));
+			background-color: hsl(var(--pf-accent-20));
 		}
 	}
 
@@ -69,7 +84,20 @@
 
 	.ghost {
 		&:hover {
-			background-color: hsl(var(--pf-accent-20), 0.5);
+			background-color: hsl(var(--pf-accent-10));
+		}
+	}
+
+	.theme {
+		background-color: hsl(var(--pf-primary-dark));
+		color: hsl(var(--pf-accent-10));
+
+		&:hover {
+			background-color: color-mix(
+				in srgb,
+				hsl(var(--pf-primary-dark)),
+				hsl(var(--pf-accent-90)) 30%
+			);
 		}
 	}
 

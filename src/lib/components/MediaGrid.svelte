@@ -1,9 +1,10 @@
 <script lang="ts">
-	import type { CombineImage } from "$lib/types";
+	import type { CombineImage } from '$lib/types';
 
-	import { IMAGE_URL } from "$lib/utils/constants";
-	import Icon from "./icon/Icon.svelte";
-	import Image from "./Image.svelte";
+	import { IMAGE_URL } from '$lib/utils/constants';
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
+	import Image from './Image.svelte';
 
 	interface MediaGrid {
 		photos?: CombineImage[];
@@ -14,28 +15,21 @@
 </script>
 
 {#if photos && photos.length > 0}
-	<div class="media-grid">
+	<div class="media-grid" role="list">
 		{#each photos as item, i (i)}
 			{@const label = `${title}-${i}`}
-			<div
-				class="image-wrapper"
-				data-backdrop={item.backdrop ? "true" : "false"}
-			>
-				<a
+			<div class="image-wrapper" data-backdrop={item.backdrop ? 'true' : 'false'} role="listitem">
+				<Button
 					aria-label={label}
 					href={`${IMAGE_URL}original${item.file_path}`}
-					target="_blank"
-					rel="noopener"
-					data-backdrop={item.backdrop ? "true" : "false"}
+					size="square"
+					external
+					variant="secondary"
+					class="extern-link"
 				>
 					<Icon icon="external-link" hidden />
-				</a>
-				<Image
-					src={item.file_path}
-					alt={label}
-					type={item.backdrop ? "backdrop" : "poster"}
-					full
-				/>
+				</Button>
+				<Image src={item.file_path} alt={label} type={item.backdrop ? 'backdrop' : 'poster'} full />
 			</div>
 		{/each}
 	</div>
@@ -54,11 +48,10 @@
 			overflow: hidden;
 			max-height: 300px;
 
-			& > a {
+			& > :global(.extern-link) {
 				position: absolute;
 				bottom: 0.5rem;
 				right: 0.5rem;
-				background-color: hsla(var(--pf-black), 0.8);
 			}
 
 			@media (max-width: 768px) {

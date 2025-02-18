@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { TITLE_PAGE } from "$lib/utils/constants";
-	import Button from "./Button.svelte";
-	import Icon from "./icon/Icon.svelte";
-	import ThemeToggle from "./ThemeToggle.svelte";
+	import { TITLE_PAGE } from '$lib/utils/constants';
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
+	import ThemeToggle from './ThemeToggle.svelte';
 
 	const NAVIGATIONS = [
 		{
-			title: "Movies",
-			url: "/movie"
+			title: 'Movies',
+			url: '/movie'
 		},
 		{
-			title: "TV Shows",
-			url: "/tv-show"
+			title: 'TV Shows',
+			url: '/tv-show'
 		},
 		{
-			title: "People",
-			url: "/people"
+			title: 'People',
+			url: '/people'
 		}
 	];
 </script>
@@ -28,6 +28,44 @@
 			</span>
 		</a>
 		<div class="navigation">
+			<ul class="nav-items">
+				{#each NAVIGATIONS as nav}
+					<li>
+						<a href={nav.url}>{nav.title}</a>
+					</li>
+				{/each}
+			</ul>
+			<div class="nav-items">
+				<Button title="Search" size="square" variant="ghost">
+					<Icon icon="search" hidden />
+				</Button>
+				<ThemeToggle />
+				<Button
+					popovertarget="mobile-navigation"
+					popovertargetaction="show"
+					class="nav-button"
+					variant="ghost"
+					size="square"
+					title="open navigation"
+				>
+					<Icon icon="menu" hidden />
+				</Button>
+			</div>
+		</div>
+	</nav>
+	<div id="mobile-navigation" popover="auto">
+		<div class="head">
+			<Button
+				size="square"
+				variant="ghost"
+				popovertarget="mobile-navigation"
+				popovertargetaction="hide"
+			>
+				<Icon icon="close" hidden />
+				<span class="sr-only">close navigation</span>
+			</Button>
+		</div>
+		<nav>
 			<ul>
 				{#each NAVIGATIONS as nav}
 					<li>
@@ -35,15 +73,7 @@
 					</li>
 				{/each}
 			</ul>
-			<ThemeToggle />
-			<Button popovertarget="mobile-navigation" class="nav-button" variant="ghost" size="square">
-				<Icon icon="menu" />
-				<span class="sr-only">Menu</span>
-			</Button>
-		</div>
-	</nav>
-	<div id="mobile-navigation" popover="auto">
-		Test
+		</nav>
 	</div>
 </header>
 
@@ -79,13 +109,17 @@
 					}
 				}
 
-				& > ul {
+				& > .nav-items {
 					display: inline-flex;
 					flex-direction: row;
-					gap: 1rem;
+					gap: 0.5rem;
 
-					@media (max-width: 768px) {
-						display: none;
+					&:is(ul) {
+						gap: 0.75rem;
+
+						@media (max-width: 768px) {
+							display: none;
+						}
 					}
 				}
 			}
@@ -107,6 +141,15 @@
 		block-size: 100dvh;
 		right: 0;
 		top: 0;
-		backdrop-filter: blur(2px);
+		box-shadow: var(--pf-shadow-md);
+		padding-inline: 0.25rem;
+
+		.head {
+			display: flex;
+			gap: 0.5rem;
+			height: var(--pf-header-height);
+			align-items: center;
+			justify-content: flex-end;
+		}
 	}
 </style>

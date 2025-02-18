@@ -1,4 +1,4 @@
-type MediaType = "tv" | "movie" | "person";
+type MediaType = 'tv' | 'movie' | 'person';
 
 interface Base {
 	id: number;
@@ -34,7 +34,7 @@ interface TvType extends Base {
 	original_name?: string;
 }
 
-export interface PersonType extends Omit<Base, "vote_count" | "vote_average"> {
+export interface PersonType extends Omit<Base, 'vote_count' | 'vote_average'> {
 	profile_path?: string;
 	name?: string;
 	media_type: MediaType;
@@ -43,6 +43,31 @@ export interface PersonType extends Omit<Base, "vote_count" | "vote_average"> {
 }
 
 // piece of type
+type MovieStatus =
+	| 'Rumored'
+	| 'Planned'
+	| 'In Production'
+	| 'Post Production'
+	| 'Released'
+	| 'Canceled';
+
+type SeriesType =
+	| 'Documentary'
+	| 'News'
+	| 'Miniseries'
+	| 'Reality'
+	| 'Scripted'
+	| 'Talk Show'
+	| 'Video';
+
+type SeriesStatus =
+	| 'Returning Series'
+	| 'Planned'
+	| 'In Production'
+	| 'Ended'
+	| 'Canceled'
+	| 'Pilot';
+
 interface AlternativeTitle {
 	iso_3166_1?: string;
 	title?: string;
@@ -61,16 +86,23 @@ export interface Video {
 	id?: string;
 	iso_639_1?: string;
 	iso_3166_1?: string;
-	key?: string;
+	key: string;
 	name?: string;
 	official: boolean;
 	published_at?: string;
 	site?: string;
 	size: 360 | 480 | 720 | 1080;
-	type: "Trailer" | "Teaser" | "Clip" | "Featurette" | "Behind the Scenes" | "Bloopers";
+	type:
+		| 'Trailer'
+		| 'Teaser'
+		| 'Clip'
+		| 'Behind The Scenes'
+		| 'Bloopers'
+		| 'Featurette'
+		| 'Opening Credits';
 }
 
-interface SimpleEpisode extends Omit<Base, "adult" | "popularity"> {
+interface SimpleEpisode extends Omit<Base, 'adult' | 'popularity'> {
 	air_date?: string;
 	episode_number: number;
 	name?: string;
@@ -85,7 +117,7 @@ interface SimpleEpisode extends Omit<Base, "adult" | "popularity"> {
 	runtime: number;
 }
 
-interface SimpleSeason extends Pick<Base, "id" | "vote_average"> {
+interface SimpleSeason extends Pick<Base, 'id' | 'vote_average'> {
 	air_date?: string;
 	episode_count: number;
 	name?: string;
@@ -94,7 +126,7 @@ interface SimpleSeason extends Pick<Base, "id" | "vote_average"> {
 	season_number: number;
 }
 
-interface BaseImage {
+export interface BaseImage {
 	aspect_ratio: number;
 	file_path?: string;
 	height: number;
@@ -104,12 +136,12 @@ interface BaseImage {
 	iso_639_1?: string;
 }
 
-interface SimplePerson extends Pick<PersonType, "id" | "name" | "profile_path"> {
+interface SimplePerson extends Pick<PersonType, 'id' | 'name' | 'profile_path'> {
 	credit_id?: string;
 	gender: number;
 }
 
-interface Cast extends Omit<PersonType, "media_type" | "known_for"> {
+interface Cast extends Omit<PersonType, 'media_type' | 'known_for'> {
 	cast_id: number;
 	character?: string;
 	credit_id?: string;
@@ -118,17 +150,17 @@ interface Cast extends Omit<PersonType, "media_type" | "known_for"> {
 	original_name?: string;
 }
 
-interface Crew extends Omit<Cast, "cast_id" | "character"> {
+interface Crew extends Omit<Cast, 'cast_id' | 'character'> {
 	department?: string;
 	job?: string;
 }
 
-interface AggregateCast extends Omit<Cast, "credit_id" | "cast_id" | "character"> {
+interface AggregateCast extends Omit<Cast, 'credit_id' | 'cast_id' | 'character'> {
 	roles: { credit_id?: string; character?: string; episode_count: number }[];
 	total_episode_count: number;
 }
 
-interface AggregateCrew extends Omit<Crew, "credit_id" | "job"> {
+interface AggregateCrew extends Omit<Crew, 'credit_id' | 'job'> {
 	jobs: { credit_id?: string; job?: string; episode_count: number }[];
 	total_episode_count: number;
 }
@@ -213,7 +245,15 @@ export interface TVTrending extends PaginationResult {
 	results: TvType[];
 }
 
-export interface MovieDetail extends Omit<MovieType, "genre_ids" | "media_type"> {
+export interface MovieDiscover extends PaginationResult {
+	results: Omit<MovieType, 'media_type'>[];
+}
+
+export interface TVDiscover extends PaginationResult {
+	results: Omit<TvType, 'media_type'>[];
+}
+
+export interface MovieDetail extends Omit<MovieType, 'genre_ids' | 'media_type'> {
 	belongs_to_collection?: BelongCollection;
 	budget: number;
 	genres: Genre[];
@@ -225,7 +265,7 @@ export interface MovieDetail extends Omit<MovieType, "genre_ids" | "media_type">
 	revenue: number;
 	runtime: number;
 	spoken_languages: SpokenLanguage[];
-	status: "Rumored" | "Planned" | "In Production" | "Post Production" | "Released" | "Canceled";
+	status: MovieStatus;
 	tagline?: string;
 
 	// videos
@@ -252,7 +292,7 @@ export interface MovieDetail extends Omit<MovieType, "genre_ids" | "media_type">
 	// external ids
 	external_ids: Pick<
 		ExternalIds,
-		"imdb_id" | "wikidata_id" | "facebook_id" | "instagram_id" | "twitter_id"
+		'imdb_id' | 'wikidata_id' | 'facebook_id' | 'instagram_id' | 'twitter_id'
 	>;
 
 	recommendations: {
@@ -270,7 +310,7 @@ export interface MovieDetail extends Omit<MovieType, "genre_ids" | "media_type">
 	};
 }
 
-export interface TvSeriesDetail extends Omit<TvType, "genre_ids" | "adult" | "media_type"> {
+export interface TvSeriesDetail extends Omit<TvType, 'genre_ids' | 'adult' | 'media_type'> {
 	created_by: SimplePerson[];
 	episode_run_time: number[];
 	genres: Genre[];
@@ -287,9 +327,9 @@ export interface TvSeriesDetail extends Omit<TvType, "genre_ids" | "adult" | "me
 	production_countries: ProductionCountry[];
 	seasons: SimpleSeason[];
 	spoken_languages: SpokenLanguage[];
-	status: "Returning Series" | "Planned" | "In Production" | "Ended" | "Canceled" | "Pilot";
+	status: SeriesStatus;
 	tagline?: string;
-	type?: string;
+	type: SeriesType;
 
 	// videos
 	videos: {
@@ -309,7 +349,7 @@ export interface TvSeriesDetail extends Omit<TvType, "genre_ids" | "adult" | "me
 		results: { iso_3166_1: string; rating: string }[];
 	};
 
-	external_ids: Omit<ExternalIds, "tiktok_id" | "youtube_id">;
+	external_ids: Omit<ExternalIds, 'tiktok_id' | 'youtube_id'>;
 
 	recommendations: {
 		results: TvType[];
@@ -326,37 +366,13 @@ export interface TvSeriesDetail extends Omit<TvType, "genre_ids" | "adult" | "me
 	};
 }
 
-// type MovieCast = MovieType & {
-// 	character?: string;
-// 	credit_id?: string;
-// 	order: number;
-// };
-
-// type TvCast = TvType & {
-// 	character?: string;
-// 	credit_id?: string;
-// 	episode_count: number;
-// };
-
-// type MovieCrew = MovieType & {
-// 	credit_id?: string;
-// 	department?: string;
-// 	job?: string;
-// };
-// type TvCrew = TvType & {
-// 	credit_id?: string;
-// 	department?: string;
-// 	job?: string;
-// 	episode_count: number;
-// };
-
-interface Cast extends Omit<PersonType, "known_for" | "media_type"> {
+interface Cast extends Omit<PersonType, 'known_for' | 'media_type'> {
 	credit_id?: string;
 	order: number;
 	character?: string;
 }
 
-interface Crew extends Omit<PersonType, "known_for" | "media_type"> {
+interface Crew extends Omit<PersonType, 'known_for' | 'media_type'> {
 	credit_id?: string;
 	order: number;
 	department?: string;
@@ -367,14 +383,26 @@ export type CombineCast = MovieTV & {
 	character?: string;
 	credit_id?: string;
 	order?: number;
+	roles: {
+		credit_id?: string;
+		character?: string;
+		episode_count?: number;
+		order?: number;
+	}[];
 };
 
-export type CombineCrew = Omit<CombineCast, "character"> & {
+export type CombineCrew = Omit<CombineCast, 'character' | 'roles'> & {
 	department?: string;
 	job?: string;
+	jobs: {
+		credit_id?: string;
+		job?: string;
+		episode_count?: number;
+		order?: number;
+	}[];
 };
 
-export interface PersonDetail extends Omit<PersonType, "media_type" | "known_for"> {
+export interface PersonDetail extends Omit<PersonType, 'media_type' | 'known_for'> {
 	birthday?: string;
 	deathday?: string;
 	also_known_as: string[];
@@ -399,4 +427,13 @@ type Episode = SimpleEpisode & {
 
 export interface SeasonDetail extends SimpleSeason {
 	episodes: Episode[];
+
+	videos: {
+		results: Video[];
+	};
+
+	aggregate_credits: {
+		cast: AggregateCast[];
+		crew: AggregateCrew[];
+	};
 }

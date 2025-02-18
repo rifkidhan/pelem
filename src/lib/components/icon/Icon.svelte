@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ICONS } from "./icons";
+	import { ICONS } from './icons';
 
 	interface IconProps {
 		icon: keyof typeof ICONS;
@@ -17,8 +17,8 @@
 		width = 24,
 		height = 24,
 		strokeWidth = 2,
-		stroke = "currentColor",
-		fill = "none",
+		stroke = 'currentColor',
+		fill = 'none',
 		class: className,
 		hidden
 	}: IconProps = $props();

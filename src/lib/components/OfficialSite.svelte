@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { ExternalIds } from "$lib/types";
-	import isNull from "$lib/utils/isNull";
-	import Link from "./Link.svelte";
+	import type { ExternalIds } from '$lib/types';
+	import isNull from '$lib/utils/isNull';
+	import Link from './Link.svelte';
 
 	interface OfficialSiteProps extends ExternalIds {
 		homepage?: string;
@@ -21,9 +21,7 @@
 	<div class="official-site">
 		{#if homepage}
 			<span>
-				<Link href={homepage} external>
-					Official site
-				</Link>
+				<Link href={homepage} external>Official site</Link>
 			</span>
 		{/if}
 		{#if facebook_id}

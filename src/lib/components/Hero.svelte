@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { Genre, Video } from "$lib/types";
-	import type { Snippet } from "svelte";
-	import type { ClassValue } from "svelte/elements";
+	import type { Genre, Video } from '$lib/types';
+	import type { Snippet } from 'svelte';
+	import type { ClassValue } from 'svelte/elements';
 
-	import Button from "./Button.svelte";
-	import Icon from "./icon/Icon.svelte";
-	import Image from "./Image.svelte";
-	import Modal from "./Modal.svelte";
-	import Truncate from "./Truncate.svelte";
-	import YtEmbed from "./YTEmbed.svelte";
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
+	import Image from './Image.svelte';
+	import Modal from './Modal.svelte';
+	import Truncate from './Truncate.svelte';
+	import YtEmbed from './YTEmbed.svelte';
 
 	interface HeroProps {
 		title?: string;
@@ -20,10 +20,11 @@
 		vote_count: number;
 		genres: Genre[];
 		video?: Video;
-		type?: "movie" | "tv";
+		type?: 'movie' | 'tv';
 		misc: Snippet;
 		creators?: Snippet;
 		class?: ClassValue;
+		title_element?: string;
 	}
 
 	let {
@@ -36,7 +37,8 @@
 		vote_count,
 		genres,
 		video,
-		type = "movie",
+		type = 'movie',
+		title_element = 'h1',
 		creators,
 		misc,
 		...props
@@ -44,13 +46,13 @@
 
 	let videoModal = $state() as Modal;
 
-	let title = $derived(heroTitle && heroTitle !== "" ? heroTitle : "Untitled");
+	let title = $derived(heroTitle && heroTitle !== '' ? heroTitle : 'Untitled');
 	let overview = $derived(
-		heroOverview && heroOverview !== "" ? heroOverview : `No overview for this ${type}`
+		heroOverview && heroOverview !== '' ? heroOverview : `No overview for this ${type}`
 	);
 </script>
 
-<div class={["hero", props.class]}>
+<div class={['hero', props.class]}>
 	<div class="backdrop">
 		{#if backdrop_path}
 			<Image src={backdrop_path} type="backdrop" full priority alt="" aria-hidden="true" />
@@ -62,15 +64,17 @@
 				<Image src={poster_path} alt={title} priority />
 			</div>
 			<div class="title">
-				<h1>{title}</h1>
-				{#if tagline && tagline !== ""}
+				<svelte:element this={title_element} class="name">
+					{title}
+				</svelte:element>
+				{#if tagline}
 					<div class="tagline">{tagline}</div>
 				{/if}
 			</div>
-			<div class="misc">
+			<div class="misc list-with-dot">
 				{@render misc()}
 			</div>
-			<div class="genres">
+			<div class="genres list-with-dot">
 				{#each genres as genre}
 					<span>{genre.name}</span>
 				{/each}
@@ -81,12 +85,12 @@
 						<Icon icon="star" stroke="none" />
 					</div>
 					<div class="score">
-						<span>{vote_average}</span>
+						<span>{Math.floor(vote_average * 10)}%</span>
 						<span class="count">{vote_count}</span>
 					</div>
 				</div>
 				{#if video && video.key}
-					<Button type="button" variant="secondary" onclick={() => videoModal.openModal()}>
+					<Button type="button" variant="theme" onclick={() => videoModal.openModal()}>
 						<Icon icon="play" hidden />
 						Play {video.type}
 					</Button>
@@ -166,7 +170,7 @@
 	.title {
 		grid-area: title;
 
-		& > h1 {
+		& > .name {
 			text-wrap: balance;
 			font-size: var(--pf-text-xl);
 			font-weight: 600;
@@ -182,24 +186,11 @@
 
 	.misc {
 		grid-area: misc;
-		display: flex;
-		flex-direction: row;
-
-		& > :global(span):not(:last-child)::after {
-			content: '•';
-			margin-inline: 0.25rem;
-		}
 	}
 
 	.genres {
 		grid-area: genres;
-		display: flex;
 		flex-wrap: wrap;
-
-		& > span:not(:last-child)::after {
-			content: '•';
-			margin-inline: 0.5rem;
-		}
 	}
 
 	.action {
@@ -267,7 +258,7 @@
 				'poster credits';
 
 			grid-template-columns: auto 1fr;
-			grid-template-rows: 1fr repeat(2, auto) 1fr auto;
+			grid-template-rows: 1fr repeat(2, auto) 1fr repeat(2, auto);
 		}
 	}
 

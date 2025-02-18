@@ -1,5 +1,5 @@
 export const getLocation = async (): Promise<{ code: string; name: string; timezone: string }> => {
-	const url = "https://cemin.deno.dev/geo";
+	const url = 'https://cemin.deno.dev/geo';
 	const res = await fetch(url);
 
 	const data = await res.json();

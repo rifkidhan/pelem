@@ -1,6 +1,6 @@
-import type { LayoutServerLoad } from "./$types";
+import type { LayoutServerLoad } from './$types';
 
-import { tvResultDetail } from "$lib/server/movie";
+import { tvResultDetail } from '$lib/server/movie';
 
 export const load: LayoutServerLoad = async ({ params, locals }) => {
 	const id = params.id;

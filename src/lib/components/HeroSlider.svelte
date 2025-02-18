@@ -1,10 +1,13 @@
 <script lang="ts">
-	import type { MovieTV } from "$lib/types";
-	import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
+	import type { MovieTV } from '$lib/types';
+	import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 
-	import { browser } from "$app/environment";
-	import EmblaCarousel from "embla-carousel";
-	import Image from "./Image.svelte";
+	import { browser } from '$app/environment';
+	import { getYear } from '$lib/utils/format';
+	import EmblaCarousel from 'embla-carousel';
+	import Button from './Button.svelte';
+	import Icon from './icon/Icon.svelte';
+	import Image from './Image.svelte';
 
 	interface CarouselProps {
 		label: string;
@@ -13,15 +16,15 @@
 
 	let { label, data }: CarouselProps = $props();
 
-	let trendings = $derived(data.filter(v => v.media_type !== "person").slice(0, 6));
+	let trendings = $derived(data.filter((v) => v.media_type !== 'person').slice(0, 7));
 	let viewport = $state() as HTMLElement;
 	let api: EmblaCarouselType | undefined = $state();
 	let slideInView = $state(0);
 
 	const embla_options: EmblaOptionsType = {
-		align: "center",
+		align: 'center',
 		loop: true,
-		slidesToScroll: "auto"
+		slidesToScroll: 'auto'
 	};
 
 	$effect(() => {
@@ -43,7 +46,7 @@
 			slideInView = e.selectedScrollSnap();
 		};
 
-		api.on("init", dotState).on("reInit", dotState).on("select", dotState);
+		api.on('init', dotState).on('reInit', dotState).on('select', dotState);
 	});
 
 	const setSlideInView = (slide: number) => {
@@ -70,8 +73,22 @@
 					<div class="content-wrapper">
 						<div class="content">
 							<div class="title">{item.title ?? item.name}</div>
-							<div class="details"></div>
+							<ul class="details list-with-dot">
+								<li class="rating">
+									<Icon icon="star" stroke="none" hidden />
+									<span>{Math.floor(item.vote_average * 10)}%</span>
+								</li>
+								{#if item.release_date || item.first_air_date}
+									<li>{getYear(item.release_date ?? item.first_air_date ?? '')}</li>
+								{/if}
+							</ul>
 							<div class="overview">{item.overview}</div>
+							<Button href={`/${item.media_type === 'tv' ? 'tv-show' : 'movie'}/${item.id}`}>
+								<span>
+									Go to {item.name ?? item.title}
+								</span>
+								<Icon icon="arrow-right" hidden />
+							</Button>
 						</div>
 					</div>
 				</li>
@@ -143,11 +160,24 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		gap: 1rem;
 
 		& > .title {
 			font-size: var(--pf-text-xl);
 			font-weight: 600;
 			line-height: 1.2;
+		}
+
+		.rating {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.25rem;
+
+			& > :global(svg) {
+				fill: hsl(var(--pf-sunflower));
+				max-inline-size: 1rem;
+				block-size: auto;
+			}
 		}
 	}
 

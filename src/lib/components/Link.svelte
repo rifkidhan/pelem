@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { HTMLAnchorAttributes } from "svelte/elements";
-	import Icon from "./icon/Icon.svelte";
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
+	import Icon from './icon/Icon.svelte';
 
 	interface LinkProps extends HTMLAnchorAttributes {
 		href: string;
@@ -12,8 +12,8 @@
 
 <a
 	{href}
-	target={external ? "_blank" : null}
-	rel={external ? "noreferrer noopener" : null}
+	target={external ? '_blank' : null}
+	rel={external ? 'noreferrer noopener' : null}
 	class={className}
 	{...attrs}
 >

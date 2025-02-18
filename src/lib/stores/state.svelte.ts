@@ -1,5 +1,5 @@
-import { on } from "svelte/events";
-import { createSubscriber, MediaQuery } from "svelte/reactivity";
+import { on } from 'svelte/events';
+import { createSubscriber, MediaQuery } from 'svelte/reactivity';
 
 class Persisted<T extends string = string> {
 	#key: string;
@@ -8,7 +8,7 @@ class Persisted<T extends string = string> {
 	#version = $state(0);
 
 	#subscribe = createSubscriber((update) => {
-		return on(window, "storage", (e) => {
+		return on(window, 'storage', (e) => {
 			if (e.key === this.#key) {
 				update();
 			}
@@ -18,7 +18,7 @@ class Persisted<T extends string = string> {
 	constructor(
 		key: string,
 		fallback: T,
-		storage = typeof localStorage === "undefined" ? undefined : localStorage
+		storage = typeof localStorage === 'undefined' ? undefined : localStorage
 	) {
 		this.#key = key;
 		this.#fallback = fallback;
@@ -29,7 +29,7 @@ class Persisted<T extends string = string> {
 		this.#subscribe();
 		this.#version;
 
-		return (this.#storage?.getItem(this.#key)) as T ?? this.#fallback;
+		return (this.#storage?.getItem(this.#key) as T) ?? this.#fallback;
 	}
 
 	set current(v: T) {
@@ -39,16 +39,16 @@ class Persisted<T extends string = string> {
 }
 
 class Theme {
-	#preference = new Persisted<"auto" | "light" | "dark">("pelem:theme", "auto");
-	#query = new MediaQuery("prefers-color-scheme: dark");
-	#system = $derived<"dark" | "light">(this.#query.current ? "dark" : "light");
+	#preference = new Persisted<'auto' | 'light' | 'dark'>('pelem:theme', 'auto');
+	#query = new MediaQuery('prefers-color-scheme: dark');
+	#system = $derived<'dark' | 'light'>(this.#query.current ? 'dark' : 'light');
 
 	get current() {
-		return this.#preference.current === "auto" ? this.#system : this.#preference.current;
+		return this.#preference.current === 'auto' ? this.#system : this.#preference.current;
 	}
 
-	set current(v: "light" | "dark") {
-		this.#preference.current = v === this.#system ? "auto" : v;
+	set current(v: 'light' | 'dark') {
+		this.#preference.current = v === this.#system ? 'auto' : v;
 	}
 }
 

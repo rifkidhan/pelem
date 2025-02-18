@@ -1,29 +1,17 @@
-import { sveltekit } from "@sveltejs/kit/vite";
-import browserslist from "browserslist";
-import { FontaineTransform } from "fontaine";
-import { browserslistToTargets } from "lightningcss";
-import { defineConfig } from "vite";
+import { sveltekit } from '@sveltejs/kit/vite';
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [
-		sveltekit(),
-		FontaineTransform.vite({
-			fallbacks: [
-				"BlinkMacSystemFont",
-				"Segoe UI",
-				"Arial",
-				"Noto Sans",
-				"Roboto"
-			]
-		})
-	],
+	plugins: [sveltekit()],
 	css: {
-		transformer: "lightningcss",
+		transformer: 'lightningcss',
 		lightningcss: {
-			targets: browserslistToTargets(browserslist([">= 0.25%", "not dead"]))
+			targets: browserslistToTargets(browserslist(['>= 0.25%', 'not dead']))
 		}
 	},
 	build: {
-		cssMinify: "lightningcss"
+		cssMinify: 'lightningcss'
 	}
 });

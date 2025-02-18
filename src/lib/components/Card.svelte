@@ -1,15 +1,15 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import type { HTMLAttributes } from "svelte/elements";
+	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	import Icon from "./icon/Icon.svelte";
-	import Image from "./Image.svelte";
+	import Icon from './icon/Icon.svelte';
+	import Image from './Image.svelte';
 
 	interface PropsCard extends HTMLAttributes<HTMLElement> {
 		as?: string;
 		title?: string;
 		img?: string;
-		img_type?: "poster" | "still";
+		img_type?: 'poster' | 'still';
 		rating?: number;
 		url?: string;
 		shadow?: boolean;
@@ -18,10 +18,10 @@
 	}
 
 	let {
-		as = "div",
-		title = "untitled",
+		as = 'div',
+		title = 'untitled',
 		img,
-		img_type = "poster",
+		img_type = 'poster',
 		rating,
 		url,
 		class: className,
@@ -33,8 +33,8 @@
 	}: PropsCard = $props();
 </script>
 
-<svelte:element this={as} class={["card-container", className]} title={url && title} {...attrs}>
-	<div class={["card", { shadow }]}>
+<svelte:element this={as} class={['card-container', className]} title={url && title} {...attrs}>
+	<div class={['card', { shadow }]}>
 		{#if url}
 			<a href={url} aria-label={title} draggable="true"></a>
 		{/if}
@@ -52,7 +52,7 @@
 				{#if rating}
 					<div class="rating">
 						<Icon icon="star" stroke="none" hidden />
-						<span>{rating}</span>
+						<span>{Math.floor(rating * 10)}%</span>
 					</div>
 				{/if}
 				<h3>{title}</h3>

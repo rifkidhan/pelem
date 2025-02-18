@@ -3,7 +3,6 @@
 
 	/* color */
 	--pf-primary: 175, 94%, 42%;
-	--pf-primary-accent: 175, 95%, 30%;
 	--pf-primary-dark: 175, 94%, 20%;
 	--pf-primary-light: 175, 68%, 54%;
 	--pf-sunflower: 58.16, 80.33%, 52.16%;
@@ -45,7 +44,6 @@
 	color-scheme: dark;
 
 	/* color */
-	--pf-primary-accent: 175, 94%, 48%;
 	--pf-primary-light: 175, 94%, 20%;
 	--pf-primary-dark: 175, 68%, 54%;
 

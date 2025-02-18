@@ -1,16 +1,12 @@
-import type { PageServerLoad } from "./$types";
+import type { PageServerLoad } from './$types';
 
-import { movieTrending, trendingAll, tvTrending } from "$lib/server/movie";
+import { movieTrending, trendingAll, tvTrending } from '$lib/server/movie';
 
 export const load: PageServerLoad = async ({ setHeaders }) => {
-	const [movies, tv, all] = await Promise.all([
-		movieTrending(),
-		tvTrending(),
-		trendingAll()
-	]);
+	const [movies, tv, all] = await Promise.all([movieTrending(), tvTrending(), trendingAll()]);
 
 	setHeaders({
-		"cache-control": "public, max-age=86400"
+		'cache-control': 'public, max-age=86400'
 	});
 
 	return {

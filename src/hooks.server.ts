@@ -1,17 +1,17 @@
-import { getLocation } from "$lib/server/geolocation";
-import type { Handle } from "@sveltejs/kit";
-import { sequence } from "@sveltejs/kit/hooks";
+import { getLocation } from '$lib/server/geolocation';
+import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 
-const preload = ["js", "css", "font"];
+const preload = ['js', 'css', 'font'];
 
 const handlePreference: Handle = async ({ event, resolve }) => {
-	const preference = event.cookies.get("preference");
+	const preference = event.cookies.get('preference');
 
 	if (!preference) {
 		const location = await getLocation();
 
 		const setPrefence = {
-			lang: "en-US",
+			lang: 'en-US',
 			region: {
 				code: location.code,
 				name: location.name,
@@ -19,7 +19,7 @@ const handlePreference: Handle = async ({ event, resolve }) => {
 			}
 		};
 
-		event.cookies.set("preference", JSON.stringify(setPrefence), { path: "/" });
+		event.cookies.set('preference', JSON.stringify(setPrefence), { path: '/' });
 		event.locals.preference = setPrefence;
 
 		return resolve(event);

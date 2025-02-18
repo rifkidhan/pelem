@@ -1,14 +1,9 @@
 <script lang="ts">
-	import type { PageProps } from "./$types";
+	import type { PageProps } from './$types';
 
-	import { Card, Carousel, Link, ListItem, MediaGrid, OfficialSite } from "$lib/components";
-	import {
-		formatCountryName,
-		formatCurrency,
-		formatDate,
-		formatLanguage
-	} from "$lib/utils/format";
-	import isNull from "$lib/utils/isNull";
+	import { Card, Carousel, Link, ListItem, MediaGrid, OfficialSite } from '$lib/components';
+	import { formatCountryName, formatCurrency, formatDate, formatLanguage } from '$lib/utils/format';
+	import isNull from '$lib/utils/isNull';
 
 	let { data }: PageProps = $props();
 
@@ -18,13 +13,12 @@
 {#if !isNull(movie.credits.cast)}
 	<section>
 		<h2 class="section-title">
-			<span>
-				Cast
-			</span>
+			<span> Cast </span>
 		</h2>
 		<Carousel label="Cast">
 			{#each movie.credits.cast.slice(0, 9) as cast (cast.id)}
 				<Card
+					as="li"
 					img={cast.profile_path}
 					url={`/people/${cast.id}`}
 					title={cast.name}
@@ -45,9 +39,7 @@
 
 <section>
 	<h2 class="section-title">
-		<span>
-			Details
-		</span>
+		<span> Details </span>
 	</h2>
 	<ul class="details">
 		{#if movie.original_title && movie.original_title !== movie.title}
@@ -120,24 +112,16 @@
 {#if movie.belongs_to_collection}
 	<section>
 		<h2 class="section-title">
-			<span>
-				Belongs To Collection
-			</span>
+			<span> Belongs To Collection </span>
 		</h2>
 
-		<Card
-			as="div"
-			title={movie.belongs_to_collection.name}
-			img={movie.belongs_to_collection.poster_path}
-		/>
+		<Card title={movie.belongs_to_collection.name} img={movie.belongs_to_collection.poster_path} />
 	</section>
 {/if}
 
 <section>
 	<h2 class="section-title">
-		<span>
-			Media
-		</span>
+		<span> Media </span>
 	</h2>
 	{#if movie.images.length > 3}
 		<MediaGrid title={movie.title} photos={movie.images.slice(0, 7)} />
@@ -148,13 +132,12 @@
 {#if !isNull(movie.recommendations.results)}
 	<section>
 		<h2 class="section-title">
-			<span>
-				Recommendations
-			</span>
+			<span> Recommendations </span>
 		</h2>
 		<Carousel label={`recommendations from ${movie.title}`}>
 			{#each movie.recommendations.results as recommend (recommend.id)}
 				<Card
+					as="li"
 					id={String(recommend.id)}
 					img={recommend.poster_path}
 					url={`/movie/${recommend.id}`}

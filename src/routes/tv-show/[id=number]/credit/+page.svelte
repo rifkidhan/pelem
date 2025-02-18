@@ -1,15 +1,15 @@
 <script lang="ts">
-	import type { PageProps } from "./$types";
+	import type { PageProps } from './$types';
 
-	import { Card } from "$lib/components";
-	import { groupBy } from "$lib/utils/group";
+	import { Card } from '$lib/components';
+	import { groupBy } from '$lib/utils/array';
 
 	let { data }: PageProps = $props();
 
-	let credits = $derived(data.movie.credits);
+	let credits = $derived(data.tv.aggregate_credits);
 	let casts = $derived(credits.cast);
 
-	let groupingCrew = groupBy(data.movie.credits.crew, (item) => item.department ?? "crew");
+	let groupingCrew = groupBy(data.tv.aggregate_credits.crew, (item) => item.department ?? 'crew');
 
 	let crewCategory = $state(Array.from(groupingCrew.keys()).sort());
 
@@ -20,23 +20,27 @@
 
 <section>
 	<h2 class="section-title">
-		<span>
-			Cast
-		</span>
+		<span>Cast</span>
 	</h2>
 	<ul class="credits">
 		{#each casts as item}
 			<Card
+				as="li"
+				shadow
 				title={item.name}
 				img={item.profile_path}
-				shadow
 				url={`/people/${item.id}`}
 				class="custom-card"
 			>
-				<div>
-					<p class="card-title">{item.name}</p>
-					<p class="cast-role">{item.character}</p>
-				</div>
+				<p class="card-title">{item.name}</p>
+				<ul>
+					{#each item.roles as role}
+						<li class="cast-role">
+							<span>{role.character}</span>
+							<span>({role.episode_count} episodes)</span>
+						</li>
+					{/each}
+				</ul>
 			</Card>
 		{/each}
 	</ul>
@@ -44,9 +48,7 @@
 
 <section>
 	<h2 class="section-title">
-		<span>
-			Crew
-		</span>
+		<span> Crew </span>
 	</h2>
 
 	{#each crewCategory as cat}
@@ -55,16 +57,21 @@
 			<ul class="credits">
 				{#each crew(cat) as item}
 					<Card
+						as="li"
+						shadow
 						title={item.name}
 						img={item.profile_path}
-						shadow
 						url={`/people/${item.id}`}
 						class="custom-card"
 					>
-						<div>
-							<p class="card-title">{item.name}</p>
-							<p class="cast-role">{item.job}</p>
-						</div>
+						<p class="card-title">{item.name}</p>
+						<ul>
+							{#each item.jobs as job}
+								<li>
+									<p class="cast-role">{job.job} ({job.episode_count} episodes)</p>
+								</li>
+							{/each}
+						</ul>
 					</Card>
 				{/each}
 			</ul>
@@ -83,6 +90,14 @@
 		}
 	}
 
+	.cast-role {
+		font-size: var(--pf-text-sm);
+
+		& > span:last-child {
+			color: hsl(var(--pf-accent-60));
+		}
+	}
+
 	.card-title {
 		font-weight: 500;
 
@@ -90,10 +105,6 @@
 			text-decoration: underline;
 			text-underline-offset: 2px;
 		}
-	}
-
-	.cast-role {
-		font-size: var(--pf-text-sm);
 	}
 
 	.subsection {
