@@ -11,7 +11,8 @@ import type {
 	TrendingAll,
 	TvSeriesDetail,
 	TVTrending,
-	TVDiscover
+	TVDiscover,
+	PersonPopular
 } from '$lib/types';
 import { shuffle } from '$lib/utils/array';
 import { error } from '@sveltejs/kit';
@@ -80,34 +81,62 @@ export const tvTrending = async (time = 'week') => {
 
 // Movie Results
 
-export const getMoviesOnCinema = async (region = 'US', page = 1) => {
+export const onCinemaMovie = async (region = 'US', page = 1) => {
 	const now = Date.now();
 
 	const data = await api<MovieDiscover>({
 		endpoint: '/discover/movie',
 		query: {
-			adult: 'false',
-			include_video: 'false',
 			page: String(page),
 			watch_region: region,
+			sort_by: 'popularity.desc',
 			region: region,
 			with_release_type: '2|3',
 			'release_date.gte': getDate(now - week * 2),
 			'release_date.lte': getDate(now + day),
 			with_watch_monetization_type: 'flatrate',
-			without_keywords: 'softcore'
+			without_keywords: 'softcore|sexy'
 		}
 	});
 
 	return data;
 };
 
-export const getTopRatedMovie = async (page = 1) => {
+export const popularMovie = async (page = 1) => {
 	const data = await api<MovieDiscover>({
 		endpoint: '/discover/movie',
 		query: {
-			include_adult: 'false',
-			include_video: 'false',
+			page: String(page),
+			sort_by: 'popularity.desc',
+			without_keywords: 'softcore|sexy'
+		}
+	});
+
+	return data;
+};
+
+export const upcomingMovie = async (page = 1) => {
+	const now = Date.now();
+
+	const data = await api<MovieDiscover>({
+		endpoint: '/discover/movie',
+		query: {
+			page: String(page),
+			sort_by: 'popularity.desc',
+			with_release_type: '1|2|3',
+			'primary_release_date.gte': getDate(now + day),
+			'primary_release_date.lte': getDate(now + day * 30),
+			without_keywords: 'softcore|sexy'
+		}
+	});
+
+	return data;
+};
+
+export const topRatedmovie = async (page = 1) => {
+	const data = await api<MovieDiscover>({
+		endpoint: '/discover/movie',
+		query: {
 			sort_by: 'vote_average.desc',
 			without_genres: '99',
 			'vote_count.gte': '2000',
@@ -118,7 +147,7 @@ export const getTopRatedMovie = async (page = 1) => {
 	return data;
 };
 
-export const movieResult = async (id: string) => {
+export const movieResult = async (id: string, region_code = 'US') => {
 	const data = await api<MovieDetail>({
 		endpoint: `/movie/${id}`,
 		query: {
@@ -126,7 +155,54 @@ export const movieResult = async (id: string) => {
 		}
 	});
 
-	return data;
+	const { release_dates, origin_country, ...res } = data;
+
+	let certificate: { iso_3166_1: string; certificate: string } | undefined;
+
+	originLoop: for (const origin of origin_country) {
+		releaseLoop: for (const releases of release_dates.results) {
+			if (releases.iso_3166_1 === region_code) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1,
+							certificate: cert.certification
+						};
+						break originLoop;
+					}
+				}
+			}
+
+			if (releases.iso_3166_1 === origin) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1,
+							certificate: cert.certification
+						};
+						continue releaseLoop;
+					}
+				}
+			}
+
+			if (!certificate) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1!,
+							certificate: cert.certification
+						};
+						continue releaseLoop;
+					}
+				}
+			}
+		}
+	}
+
+	return {
+		...res,
+		certificate
+	};
 };
 
 export const movieResultDetail = async (id: string, region_code = 'US') => {
@@ -141,25 +217,47 @@ export const movieResultDetail = async (id: string, region_code = 'US') => {
 
 	const { release_dates, origin_country, images: mediaImages, ...res } = data;
 
-	const getCertificate = release_dates.results.filter((cert) =>
-		cert.release_dates.find((v) => v.certification !== '')
-	);
+	let certificate: { iso_3166_1: string; certificate: string } | undefined;
 
-	const certificate = origin_country.flatMap((origin) => {
-		const findByorigin = getCertificate.find(
-			(cert) => cert.iso_3166_1 === region_code || cert.iso_3166_1 === origin
-		);
+	originLoop: for (const origin of origin_country) {
+		releaseLoop: for (const releases of release_dates.results) {
+			if (releases.iso_3166_1 === region_code) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1,
+							certificate: cert.certification
+						};
+						break originLoop;
+					}
+				}
+			}
 
-		if (!findByorigin) return getCertificate[0];
+			if (releases.iso_3166_1 === origin) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1,
+							certificate: cert.certification
+						};
+						continue releaseLoop;
+					}
+				}
+			}
 
-		return findByorigin;
-	})[0];
-
-	const release_dates_filter = data.origin_country.flatMap((origin) =>
-		data.release_dates.results.filter(
-			(release) => release.iso_3166_1 === region_code || release.iso_3166_1 === origin
-		)
-	);
+			if (!certificate) {
+				for (const cert of releases.release_dates) {
+					if (cert.certification) {
+						certificate = {
+							iso_3166_1: releases.iso_3166_1!,
+							certificate: cert.certification
+						};
+						continue releaseLoop;
+					}
+				}
+			}
+		}
+	}
 
 	const backdropImage = mediaImages.backdrops.map((image) => ({ ...image, backdrop: true }));
 
@@ -169,7 +267,6 @@ export const movieResultDetail = async (id: string, region_code = 'US') => {
 		...res,
 		release_dates,
 		origin_country,
-		release_dates_filter,
 		certificate,
 		images: shuffle(images)
 	};
@@ -184,7 +281,7 @@ export const getTopRatedTv = async (page = 1) => {
 			include_adult: 'false',
 			include_video: 'false',
 			sort_by: 'vote_average.desc',
-			'vote_count.gte': '2000',
+			'vote_count.gte': '1000',
 			page: String(page)
 		}
 	});
@@ -192,7 +289,7 @@ export const getTopRatedTv = async (page = 1) => {
 	return data;
 };
 
-export const tvResult = async (id: string) => {
+export const tvResult = async (id: string, region_code = 'US') => {
 	const data = await api<TvSeriesDetail>({
 		endpoint: `/tv/${id}`,
 		query: {
@@ -200,7 +297,51 @@ export const tvResult = async (id: string) => {
 		}
 	});
 
-	return data;
+	const { content_ratings, origin_country, ...res } = data;
+
+	let certificate: { iso_3166_1: string; rating: string } | undefined;
+
+	originLoop: for (const origin of origin_country) {
+		certificateLoop: for (const rating of content_ratings.results) {
+			if (rating.iso_3166_1 === region_code) {
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
+
+				break originLoop;
+			}
+			if (rating.iso_3166_1 === origin) {
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
+				continue certificateLoop;
+			}
+
+			if (!certificate) {
+				if (rating.iso_3166_1 === 'US') {
+					certificate = {
+						iso_3166_1: rating.iso_3166_1,
+						rating: rating.rating
+					};
+
+					continue certificateLoop;
+				}
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
+
+				continue certificateLoop;
+			}
+		}
+	}
+
+	return {
+		...res,
+		certificate
+	};
 };
 
 export const tvResultDetail = async (id: string, region_code = 'US') => {
@@ -215,25 +356,44 @@ export const tvResultDetail = async (id: string, region_code = 'US') => {
 
 	const { origin_country, content_ratings, images: mediaImages, ...res } = data;
 
-	const certificate = origin_country.flatMap((origin) => {
-		const ratingRequirement = content_ratings.results.filter(
-			(r) => r.iso_3166_1 === region_code || r.iso_3166_1 === origin || r.iso_3166_1 === 'US'
-		);
+	let certificate: { iso_3166_1: string; rating: string } | undefined;
 
-		const region = ratingRequirement.find((r) => r.iso_3166_1 === region_code);
+	originLoop: for (const origin of origin_country) {
+		certificateLoop: for (const rating of content_ratings.results) {
+			if (rating.iso_3166_1 === region_code) {
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
 
-		if (region) return region;
+				break originLoop;
+			}
+			if (rating.iso_3166_1 === origin && origin !== 'US') {
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
+				continue certificateLoop;
+			}
 
-		const originRes = ratingRequirement.find((r) => r.iso_3166_1 === origin);
+			if (!certificate) {
+				if (rating.iso_3166_1 === 'US') {
+					certificate = {
+						iso_3166_1: rating.iso_3166_1,
+						rating: rating.rating
+					};
 
-		if (originRes) return originRes;
+					continue certificateLoop;
+				}
+				certificate = {
+					iso_3166_1: rating.iso_3166_1,
+					rating: rating.rating
+				};
 
-		const usRating = ratingRequirement.find((r) => r.iso_3166_1 === 'US');
-
-		if (usRating) return usRating;
-
-		return data.content_ratings.results[0];
-	})[0];
+				continue certificateLoop;
+			}
+		}
+	}
 
 	const backdropImage = mediaImages.backdrops.map((image) => ({ ...image, backdrop: true }));
 
@@ -261,6 +421,16 @@ export const seasonDetail = async (series_id: string, season_number: string) => 
 
 // Person Results
 
+export const popularPerson = async (page = 1) => {
+	const data = await api<PersonPopular>({
+		endpoint: '/person/popular',
+		query: {
+			page: String(page)
+		}
+	});
+
+	return data;
+};
 export const personResultDetail = async (id: string) => {
 	const data = await api<PersonDetail>({
 		endpoint: `/person/${id}`,

@@ -5,7 +5,6 @@
 	import { Banner, Hero } from '$lib/components';
 	import { find } from '$lib/utils/array';
 	import { formatRuntime, getYear } from '$lib/utils/format';
-	import isNull from '$lib/utils/isNull';
 
 	let { data, children }: LayoutProps = $props();
 
@@ -27,18 +26,7 @@
 
 	let directors = $derived(movie.credits.crew.filter((v) => v.job === 'Director'));
 	let writers = $derived(movie.credits.crew.filter((v) => v.department === 'Writing'));
-
-	let certificate = $derived.by(() => {
-		if (!movie.certificate) return undefined;
-
-		const filter = movie.certificate.release_dates.filter((v) => v.certification !== '');
-
-		if (isNull(filter)) {
-			return undefined;
-		}
-
-		return filter[0].certification;
-	});
+	$inspect(movie);
 </script>
 
 {#key movie.id}
@@ -62,9 +50,9 @@
 			video={videoPreview}
 		>
 			{#snippet misc()}
-				{#if certificate}
+				{#if movie.certificate}
 					<span>
-						{certificate}
+						{movie.certificate.certificate}
 					</span>
 				{/if}
 				{#if movie.release_date}

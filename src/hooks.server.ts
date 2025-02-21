@@ -1,22 +1,23 @@
-import { getLocation } from '$lib/server/geolocation';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
 const preload = ['js', 'css', 'font'];
 
+const region = (req: Request) => {
+	const code = req.headers.get('X-Vercel-IP-Country') ?? 'ID';
+
+	return code;
+};
+
 const handlePreference: Handle = async ({ event, resolve }) => {
 	const preference = event.cookies.get('preference');
 
 	if (!preference) {
-		const location = await getLocation();
+		const location = region(event.request);
 
 		const setPrefence = {
 			lang: 'en-US',
-			region: {
-				code: location.code,
-				name: location.name,
-				timezone: location.timezone
-			}
+			region: location
 		};
 
 		event.cookies.set('preference', JSON.stringify(setPrefence), { path: '/' });

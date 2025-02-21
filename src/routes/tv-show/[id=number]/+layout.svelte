@@ -3,10 +3,8 @@
 
 	import { page } from '$app/state';
 	import { Banner, Hero } from '$lib/components';
-	import { getYear } from '$lib/utils/format';
+	import { getYear, formatRuntime } from '$lib/utils/format';
 	import { find } from '$lib/utils/array';
-	import { formatPlural } from '$lib/utils/format';
-	import { SEASON_SUFFIXES, EPISODE_SUFFIXES } from '$lib/utils/constants';
 
 	let { data, children }: LayoutProps = $props();
 
@@ -31,6 +29,8 @@
 
 		return find(tv.seasons, (v) => v.season_number === parseInt(seasonParam));
 	});
+
+	$inspect(tv);
 </script>
 
 {#key page.url.pathname}
@@ -72,8 +72,10 @@
 						{getYear(tv.first_air_date)}
 					</span>
 				{/if}
-				<span>{tv.number_of_seasons} {formatPlural(tv.number_of_seasons, SEASON_SUFFIXES)}</span>
-				<span>{tv.number_of_episodes} {formatPlural(tv.number_of_episodes, EPISODE_SUFFIXES)}</span>
+
+				{#if tv.episode_run_time[0]}
+					<span>{formatRuntime(tv.episode_run_time[0])}</span>
+				{/if}
 			{/snippet}
 
 			{#snippet creators()}

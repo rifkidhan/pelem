@@ -21,12 +21,16 @@
 	</div>
 	<div class="banner-wrapper">
 		<div class="content">
-			<div class="thumbnail">
-				<Image src={poster_path} alt={`${content_title}-poster`} />
-			</div>
+			{#if poster_path}
+				<div class="thumbnail">
+					<Image src={poster_path} alt={`${content_title}-poster`} />
+				</div>
+			{/if}
 			<hgroup>
 				<h1>{page_name}</h1>
-				<h2>{content_title}</h2>
+				{#if content_title}
+					<h2>{content_title}</h2>
+				{/if}
 			</hgroup>
 		</div>
 	</div>
@@ -37,7 +41,7 @@
 		inline-size: 100%;
 		block-size: max-content;
 		position: relative;
-		color: hsl(var(--pf-white));
+		color: var(--pf-white);
 
 		.backdrop-banner {
 			display: block;
@@ -46,7 +50,7 @@
 			left: 0;
 			inline-size: 100%;
 			block-size: 100%;
-			background-color: hsl(var(--pf-accent-80));
+			background-color: var(--pf-accent-80);
 		}
 
 		.banner-wrapper {

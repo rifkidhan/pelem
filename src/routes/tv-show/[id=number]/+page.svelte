@@ -12,7 +12,7 @@
 		Truncate
 	} from '$lib/components';
 	import { formatCountryName, formatDate, formatLanguage, formatPlural } from '$lib/utils/format';
-	import { EPISODE_SUFFIXES } from '$lib/utils/constants';
+	import { EPISODE_SUFFIXES, SEASON_SUFFIXES } from '$lib/utils/constants';
 	import isNull from '$lib/utils/isNull';
 
 	let { data }: PageProps = $props();
@@ -139,8 +139,19 @@
 				{tv.original_name}
 			</ListItem>
 		{/if}
+
 		<ListItem heading="Series status">
 			{tv.status}
+		</ListItem>
+
+		<ListItem heading="Total seasons">
+			{tv.number_of_seasons}
+			{formatPlural(tv.number_of_seasons, SEASON_SUFFIXES)}
+		</ListItem>
+
+		<ListItem heading="Total episodes">
+			{tv.number_of_episodes}
+			{formatPlural(tv.number_of_episodes, EPISODE_SUFFIXES)}
 		</ListItem>
 
 		{#if tv.first_air_date}
@@ -243,27 +254,7 @@
 		}
 
 		.role-count {
-			color: hsl(var(--pf-accent-60));
-		}
-	}
-
-	.view-more-card {
-		display: block;
-		box-shadow: var(--pf-shadow-md);
-		border-radius: var(--pf-radius);
-		transition: box-shadow 150ms ease-in-out;
-		user-select: none;
-
-		& > a {
-			display: flex;
-			inline-size: 100%;
-			block-size: 100%;
-			align-items: center;
-			justify-content: center;
-
-			.view-more-card:hover & {
-				text-decoration: underline;
-			}
+			color: var(--pf-accent-60);
 		}
 	}
 
@@ -286,7 +277,7 @@
 		}
 
 		.date {
-			color: hsl(var(--pf-accent-60));
+			color: var(--pf-accent-60);
 		}
 	}
 </style>

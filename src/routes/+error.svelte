@@ -20,8 +20,8 @@
 		.status {
 			font-size: 2em;
 			font-weight: 800;
-			color: hsl(var(--pf-primary));
-			letter-spacing: 2;
+			color: var(--pf-primary);
+			letter-spacing: 0.5rem;
 		}
 	}
 </style>

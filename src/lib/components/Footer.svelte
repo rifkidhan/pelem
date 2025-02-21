@@ -26,7 +26,7 @@
 
 <style>
 	footer {
-		background-color: hsl(var(--pf-accent-20));
+		background-color: var(--pf-accent-20);
 		width: 100%;
 
 		.footer-wrapper {

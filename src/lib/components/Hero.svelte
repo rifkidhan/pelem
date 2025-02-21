@@ -120,7 +120,7 @@
 		inline-size: 100%;
 		block-size: max-content;
 		position: relative;
-		color: hsl(var(--pf-white));
+		color: var(--pf-white);
 	}
 
 	.backdrop {
@@ -130,7 +130,7 @@
 		left: 0;
 		inline-size: 100%;
 		block-size: 100%;
-		background-color: hsl(var(--pf-accent-80));
+		background-color: var(--pf-accent-80);
 	}
 
 	.wrapper {
@@ -210,7 +210,7 @@
 				block-size: 2.5rem;
 
 				& > :global(svg) {
-					fill: hsl(var(--pf-sunflower));
+					fill: var(--pf-sunflower);
 					inline-size: 100%;
 					block-size: auto;
 				}

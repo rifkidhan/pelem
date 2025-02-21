@@ -12,6 +12,7 @@
 		img_type?: 'poster' | 'still';
 		rating?: number;
 		url?: string;
+		rank?: number;
 		shadow?: boolean;
 		content?: Snippet;
 		thumbnail?: Snippet;
@@ -29,6 +30,7 @@
 		content,
 		thumbnail,
 		shadow,
+		rank,
 		...attrs
 	}: PropsCard = $props();
 </script>
@@ -38,7 +40,7 @@
 		{#if url}
 			<a href={url} aria-label={title} draggable="true"></a>
 		{/if}
-		<div class="thumbnail">
+		<div class="thumbnail" data-rank={rank}>
 			{#if thumbnail}
 				{@render thumbnail()}
 			{:else}
@@ -72,7 +74,7 @@
 			display: flex;
 			flex-direction: row;
 			position: relative;
-			background-color: hsl(var(--pf-accent-5));
+			background-color: var(--pf-accent-5);
 			border-radius: var(--pf-radius);
 			overflow: hidden;
 			transition: box-shadow 150ms ease-in-out;
@@ -82,6 +84,16 @@
 			padding: 1rem;
 			gap: 1rem;
 			align-items: center;
+
+			@container card (max-width: 460px) {
+				padding: 0.5rem;
+				gap: 0.5rem;
+			}
+
+			@container card (max-width: 200px) {
+				flex-direction: column;
+				padding: 0;
+			}
 
 			&:is(.shadow) {
 				box-shadow: var(--pf-shadow-md);
@@ -108,6 +120,42 @@
 				overflow: hidden;
 				flex-shrink: 0;
 
+				&[data-rank]::after {
+					content: attr(data-rank);
+					display: block;
+					user-select: none;
+					position: absolute;
+					bottom: -20px;
+					left: -15px;
+					font-size: calc(10cqi);
+					color: var(--pf-black);
+					line-height: 1;
+					font-weight: 800;
+					-webkit-text-stroke: 12px var(--pf-primary-dark);
+					paint-order: stroke fill;
+					letter-spacing: -0.25rem;
+
+					@container card (max-width: 460px) {
+						font-size: 20cqi;
+					}
+
+					@container card (max-width: 200px) {
+						font-size: 70cqi;
+					}
+				}
+
+				@container card (max-width: 876px) {
+					inline-size: 23cqi;
+				}
+
+				@container card (max-width: 460px) {
+					inline-size: 30cqi;
+				}
+
+				@container card (max-width: 200px) {
+					inline-size: 100cqi;
+				}
+
 				&:empty {
 					display: none;
 				}
@@ -127,6 +175,10 @@
 				gap: 0.5rem;
 				width: 100%;
 
+				@container card (max-width: 200px) {
+					padding: 0.5rem;
+				}
+
 				.rating {
 					display: flex;
 					flex-direction: row;
@@ -134,11 +186,12 @@
 					gap: 0.25rem;
 
 					& > :global(svg) {
-						fill: hsl(var(--pf-sunflower));
+						fill: var(--pf-sunflower);
 						max-inline-size: 1rem;
 						block-size: auto;
 					}
 				}
+
 				& > h3 {
 					font-weight: 500;
 					white-space: normal;
@@ -150,45 +203,16 @@
 					-webkit-line-clamp: 2;
 					line-clamp: 2;
 					min-height: 2lh;
+					font-size: var(--pf-text-lg);
+
+					@container card (max-width: 300px) {
+						font-size: var(--pf-text-normal);
+					}
 
 					.card:has(a):hover & {
 						text-decoration: underline;
 						text-underline-offset: 2px;
 					}
-				}
-			}
-		}
-
-		@container card (max-width: 876px) {
-			.card {
-				.thumbnail {
-					inline-size: 23cqi;
-				}
-			}
-		}
-
-		@container card (max-width: 460px) {
-			.card {
-				padding: 0.5rem;
-				gap: 0.5rem;
-
-				.thumbnail {
-					inline-size: 30cqi;
-				}
-			}
-		}
-
-		@container card (max-width: 200px) {
-			.card {
-				flex-direction: column;
-				padding: 0;
-
-				.thumbnail {
-					inline-size: 100cqi;
-				}
-
-				.content {
-					padding: 0.5rem;
 				}
 			}
 		}

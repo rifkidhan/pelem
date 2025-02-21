@@ -6,11 +6,7 @@ declare global {
 		interface Locals {
 			preference: {
 				lang: string;
-				region: {
-					code: string;
-					name: string;
-					timezone: string;
-				};
+				region: string;
 			};
 		}
 		interface PageData {

@@ -37,6 +37,9 @@
 	video={videoPreview}
 >
 	{#snippet misc()}
+		{#if random.certificate}
+			<span>{random.certificate.certificate}</span>
+		{/if}
 		{#if random.release_date}
 			<span>{getYear(random.release_date)}</span>
 		{/if}
@@ -54,9 +57,14 @@
 		</Button>
 	{/snippet}
 </Hero>
+{#snippet viewMore(url: string)}
+	<li class="view-more-card" aria-roledescription="item">
+		<a href={`/movie/${url}`}>View more</a>
+	</li>
+{/snippet}
 <section>
 	<h2 class="section-title">
-		<span> Trending on this day </span>
+		<span>Trending on this day</span>
 	</h2>
 	<Carousel label="Trending on this day">
 		{#each day as item}
@@ -74,7 +82,7 @@
 </section>
 <section>
 	<h2 class="section-title">
-		<span> Trending on this week </span>
+		<span>Trending on this week</span>
 	</h2>
 	{#await data.weekTrending}
 		<Carousel label="skeleton" loading />
@@ -96,13 +104,13 @@
 </section>
 <section>
 	<h2 class="section-title">
-		<span>Top Rated Movie</span>
+		<span>Popular Movie</span>
 	</h2>
-	{#await data.topRated}
+	{#await data.popular}
 		<Carousel label="skeleton" loading />
-	{:then top_rated}
-		<Carousel label="Trending on this week">
-			{#each top_rated.results as item}
+	{:then popular}
+		<Carousel label="Top rated movies">
+			{#each popular.results as item, i}
 				<Card
 					url={`/movie/${item.id}`}
 					title={item.title}
@@ -111,19 +119,45 @@
 					aria-roledescription="item"
 					shadow
 					as="li"
+					rank={i + 1}
 				/>
 			{/each}
+			{@render viewMore('popular')}
 		</Carousel>
 	{/await}
 </section>
 <section>
 	<h2 class="section-title">
-		<span> On Cinema </span>
+		<span>Top Rated Movie</span>
+	</h2>
+	{#await data.topRated}
+		<Carousel label="skeleton" loading />
+	{:then top_rated}
+		<Carousel label="Top rated movies">
+			{#each top_rated.results as item, i}
+				<Card
+					url={`/movie/${item.id}`}
+					title={item.title}
+					img={item.poster_path}
+					rating={item.vote_average}
+					aria-roledescription="item"
+					shadow
+					as="li"
+					rank={i + 1}
+				/>
+			{/each}
+			{@render viewMore('top-rated')}
+		</Carousel>
+	{/await}
+</section>
+<section>
+	<h2 class="section-title">
+		<span>On Cinema</span>
 	</h2>
 	{#await data.onCinema}
 		<Carousel label="skeleton" loading />
 	{:then cinema}
-		<Carousel label="Trending on this week">
+		<Carousel label="Playing movies">
 			{#each cinema.results as item}
 				<Card
 					url={`/movie/${item.id}`}
@@ -135,6 +169,34 @@
 					as="li"
 				/>
 			{/each}
+			{#if cinema.page < cinema.total_pages}
+				{@render viewMore('now-playing')}
+			{/if}
+		</Carousel>
+	{/await}
+</section>
+<section>
+	<h2 class="section-title">
+		<span>Upcoming</span>
+	</h2>
+	{#await data.upcoming}
+		<Carousel label="skeleton" loading />
+	{:then upcoming}
+		<Carousel label="Upcoming movies">
+			{#each upcoming.results as item}
+				<Card
+					url={`/movie/${item.id}`}
+					title={item.title}
+					img={item.poster_path}
+					rating={item.vote_average}
+					aria-roledescription="item"
+					shadow
+					as="li"
+				/>
+			{/each}
+			{#if upcoming.page < upcoming.total_pages}
+				{@render viewMore('upcoming')}
+			{/if}
 		</Carousel>
 	{/await}
 </section>

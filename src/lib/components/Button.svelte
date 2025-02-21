@@ -56,48 +56,44 @@
 	}
 
 	.primary {
-		background-color: hsl(var(--pf-accent-90));
-		color: hsl(var(--pf-accent-5));
+		background-color: var(--pf-accent-90);
+		color: var(--pf-accent-5);
 
 		&:hover {
-			background-color: hsl(var(--pf-accent-80));
+			background-color: var(--pf-accent-80);
 		}
 	}
 
 	.secondary {
-		background-color: hsl(var(--pf-accent-10));
-		color: hsl(var(--pf-accent-95));
+		background-color: var(--pf-accent-10);
+		color: var(--pf-accent-95);
 
 		&:hover {
-			background-color: hsl(var(--pf-accent-20));
+			background-color: var(--pf-accent-20);
 		}
 	}
 
 	.outline {
-		border: solid 1px hsl(var(--pf-accent-95));
-		background-color: hsl(var(--pf-accent-5));
+		border: solid 1px var(--pf-accent-95);
+		background-color: var(--pf-accent-5);
 
 		&:hover {
-			background-color: hsl(var(--pf-accent-10));
+			background-color: var(--pf-accent-10);
 		}
 	}
 
 	.ghost {
 		&:hover {
-			background-color: hsl(var(--pf-accent-10));
+			background-color: var(--pf-accent-10);
 		}
 	}
 
 	.theme {
-		background-color: hsl(var(--pf-primary-dark));
-		color: hsl(var(--pf-accent-10));
+		background-color: var(--pf-primary-dark);
+		color: var(--pf-accent-10);
 
 		&:hover {
-			background-color: color-mix(
-				in srgb,
-				hsl(var(--pf-primary-dark)),
-				hsl(var(--pf-accent-90)) 30%
-			);
+			background-color: color-mix(in oklab, var(--pf-primary-dark), var(--pf-accent-90) 30%);
 		}
 	}
 

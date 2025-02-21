@@ -21,7 +21,7 @@ html,
 
 	@supports (scrollbar-width: auto) {
 		scrollbar-width: thin;
-		scrollbar-color: hsl(var(--pf-primary)) transparent;
+		scrollbar-color: var(--pf-primary) transparent;
 		scrollbar-gutter: stable;
 	}
 
@@ -30,14 +30,14 @@ html,
 
 body {
 	line-height: inherit;
-	color: hsl(var(--pf-accent-90));
-	background-color: hsl(var(--pf-accent-10));
+	color: var(--pf-accent-90);
+	background-color: var(--pf-accent-10);
 	font-size: var(--pf-text-normal);
 }
 
 ::selection {
-	background: hsl(var(--pf-primary-dark));
-	color: hsl(var(--pf-accent-5));
+	background: var(--pf-primary-dark);
+	color: var(--pf-accent-5);
 }
 
 hr {
@@ -128,8 +128,8 @@ dialog {
 }
 
 ::placeholder {
-	opacity: 1; /* 1 */
-	color: color-mix(in srgb, currentColor 50%, transparent); /* 2 */
+	opacity: 1;
+	color: color-mix(in oklab, currentColor 50%, transparent);
 }
 
 img,
@@ -137,8 +137,10 @@ svg,
 video,
 canvas,
 picture,
+iframe,
 audio {
-	display: block; /* 1 */
+	display: block;
+	vertical-align: middle;
 }
 
 img,
@@ -161,5 +163,5 @@ button,
 }
 
 [hidden]:where(:not([hidden='until-found'])) {
-	display: none;
+	display: none !important;
 }

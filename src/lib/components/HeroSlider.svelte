@@ -74,6 +74,9 @@
 						<div class="content">
 							<div class="title">{item.title ?? item.name}</div>
 							<ul class="details list-with-dot">
+								{#if item.media_type === 'tv'}
+									<li>TV Series</li>
+								{/if}
 								<li class="rating">
 									<Icon icon="star" stroke="none" hidden />
 									<span>{Math.floor(item.vote_average * 10)}%</span>
@@ -134,6 +137,7 @@
 		position: relative;
 		inline-size: 100%;
 		block-size: max-content;
+		user-select: none;
 	}
 
 	.backdrop {
@@ -218,7 +222,7 @@
 			gap: 0.25rem;
 
 			& > :global(svg) {
-				fill: hsl(var(--pf-sunflower));
+				fill: var(--pf-sunflower);
 				max-inline-size: 1rem;
 				block-size: auto;
 			}
@@ -241,11 +245,11 @@
 			& > button {
 				inline-size: 1rem;
 				block-size: 1rem;
-				border: solid 2px hsl(var(--pf-accent-90));
+				border: solid 2px var(--pf-accent-90);
 				border-radius: var(--pf-radius);
 
 				&[aria-current='true'] {
-					background-color: hsl(var(--pf-accent-90));
+					background-color: var(--pf-accent-90);
 				}
 			}
 		}

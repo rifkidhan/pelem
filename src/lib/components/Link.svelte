@@ -32,7 +32,7 @@
 		display: inline-flex;
 		position: relative;
 		gap: 0.25rem;
-		color: hsl(var(--pf-primary));
+		color: var(--pf-primary);
 		inline-size: fit-content;
 		align-items: center;
 		transition: color 100ms ease-in-out;
@@ -50,14 +50,14 @@
 			height: 0.5em;
 			position: absolute;
 			bottom: 0;
-			background-color: hsl(var(--pf-primary-light));
+			background-color: var(--pf-primary-light);
 			z-index: -1;
 			clip-path: inset(0 100% 0 0);
 			transition: clip-path 200ms ease-in-out;
 		}
 
 		&:hover {
-			color: hsl(var(--pf-accent-95));
+			color: var(--pf-accent-95);
 
 			&::before {
 				clip-path: inset(0 0% 0 0);

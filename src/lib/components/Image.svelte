@@ -101,7 +101,7 @@
 		block-size: auto;
 		object-fit: cover;
 		object-position: center;
-		background-color: hsl(var(--pf-accent-50));
+		background-color: var(--pf-accent-50);
 	}
 
 	.full {
@@ -119,7 +119,7 @@
 	.fallback {
 		inline-size: 100%;
 		block-size: auto;
-		background-color: hsl(var(--pf-accent-50));
+		background-color: var(--pf-accent-50);
 		display: flex;
 		align-items: center;
 		justify-content: center;

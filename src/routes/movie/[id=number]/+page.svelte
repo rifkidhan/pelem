@@ -163,24 +163,4 @@
 		flex-direction: column;
 		gap: 1rem;
 	}
-
-	.view-more-card {
-		display: block;
-		box-shadow: var(--pf-shadow-md);
-		border-radius: var(--pf-radius);
-		transition: box-shadow 150ms ease-in-out;
-		user-select: none;
-
-		& > a {
-			display: flex;
-			inline-size: 100%;
-			block-size: 100%;
-			align-items: center;
-			justify-content: center;
-
-			.view-more-card:hover & {
-				text-decoration: underline;
-			}
-		}
-	}
 </style>

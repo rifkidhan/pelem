@@ -105,7 +105,7 @@
 		font-size: var(--pf-text-sm);
 
 		& > span:last-child {
-			color: hsl(var(--pf-accent-60));
+			color: var(--pf-accent-60);
 		}
 	}
 

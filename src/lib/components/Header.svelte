@@ -98,7 +98,7 @@
 		top: 0;
 		left: 0;
 		z-index: 5;
-		background-color: hsl(var(--pf-accent-20));
+		background-color: var(--pf-accent-20);
 
 		& > nav {
 			max-width: 92dvw;
@@ -140,7 +140,7 @@
 
 	.home {
 		font-weight: 700;
-		color: hsl(var(--pf-primary));
+		color: var(--pf-primary);
 		font-size: clamp(1rem, calc(0.5rem + 5vw), 2rem);
 		line-height: 1;
 	}
@@ -149,12 +149,13 @@
 		inset: unset;
 	}
 	#mobile-navigation {
-		inline-size: 70dvw;
+		inline-size: max-content;
+		min-inline-size: 30dvw;
 		block-size: 100dvh;
 		right: 0;
 		top: 0;
 		box-shadow: var(--pf-shadow-md);
-		padding-inline: 0.5rem;
+		padding-inline: 1.5rem;
 
 		& > .head {
 			display: flex;
@@ -165,7 +166,7 @@
 		}
 
 		& > nav {
-			font-size: var(--pf-text-lg);
+			font-size: var(--pf-text-xl);
 		}
 	}
 </style>

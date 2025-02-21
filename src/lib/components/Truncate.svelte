@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { browser } from '$app/environment';
 	import Icon from './icon/Icon.svelte';
 
 	interface TruncateProps extends HTMLAttributes<HTMLDivElement> {
@@ -13,14 +12,6 @@
 	let truncate = $state(true);
 	let open = $state(false);
 	let element: HTMLElement | undefined = $state();
-
-	// const truncation = (node: HTMLElement) => {
-	// 	$effect(() => {
-	// 		if (browser) {
-	// 			truncate = node.scrollHeight > node.clientHeight + 1;
-	// 		}
-	// 	});
-	// };
 
 	$effect(() => {
 		if (!element) return;
@@ -79,7 +70,7 @@
 		}
 
 		button {
-			color: hsl(var(--pf-primary));
+			color: var(--pf-primary);
 			display: inline-flex;
 			position: absolute;
 			align-items: flex-end;

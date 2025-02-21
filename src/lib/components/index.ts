@@ -16,6 +16,7 @@ export { default as MediaGrid } from './MediaGrid.svelte';
 export { default as OfficialSite } from './OfficialSite.svelte';
 export { default as Truncate } from './Truncate.svelte';
 export { default as YTEmbed } from './YTEmbed.svelte';
+export { default as Pagination } from './Pagination.svelte';
 
 // layout components
 export { default as BackToButton } from './BackToButton.svelte';

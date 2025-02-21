@@ -160,7 +160,7 @@
 
 	.card-skeleton {
 		inline-size: 100%;
-		background-color: hsl(var(--pf-accent-5));
+		background-color: var(--pf-accent-5);
 		border-radius: var(--pf-radius);
 		overflow: hidden;
 		display: flex;
@@ -169,7 +169,7 @@
 
 		& > * {
 			animation: var(--pf-animation-pulse);
-			background-color: hsl(var(--pf-accent-50));
+			background-color: var(--pf-accent-50);
 			border-radius: var(--pf-radius);
 			overflow: hidden;
 		}
@@ -216,12 +216,12 @@
 			appearance: none;
 
 			&[value]::-webkit-progress-bar {
-				background-color: hsl(var(--pf-accent-5));
+				background-color: var(--pf-accent-5);
 			}
 
 			&[value]::-webkit-progress-value,
 			&[value]::-moz-progress-bar {
-				background-color: hsl(var(--pf-primary));
+				background-color: var(--pf-primary);
 			}
 		}
 	}

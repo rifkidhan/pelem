@@ -21,6 +21,8 @@
 	const getCrew = (key: string) => {
 		return crews!.get(key)!;
 	};
+
+	$inspect(person);
 </script>
 
 {#key person.id}
@@ -234,7 +236,7 @@
 	.hero {
 		container: hero / inline-size;
 		position: relative;
-		background-color: hsl(var(--pf-accent-20));
+		background-color: var(--pf-accent-20);
 		inline-size: 100%;
 		padding-block-start: calc(var(--pf-header-height) + 2rem);
 		padding-block-end: 2rem;
@@ -321,7 +323,7 @@
 				block-size: 100%;
 				position: absolute;
 				top: 0;
-				background-color: hsl(var(--pf-primary-light));
+				background-color: var(--pf-primary-light);
 				z-index: -1;
 			}
 		}
@@ -337,7 +339,7 @@
 		summary {
 			display: block;
 			font-weight: 600;
-			background-color: hsl(var(--pf-accent-5));
+			background-color: var(--pf-accent-5);
 			padding-block: 1rem;
 
 			h3 {
@@ -391,7 +393,7 @@
 
 				.date {
 					flex-shrink: 0;
-					color: hsl(var(--pf-primary-dark));
+					color: var(--pf-primary-dark);
 				}
 
 				.item {
@@ -401,7 +403,7 @@
 					inline-size: 100%;
 
 					h4 {
-						color: hsl(var(--pf-accent-95));
+						color: var(--pf-accent-95);
 						font-weight: 600;
 
 						.credit:hover & {
@@ -411,7 +413,7 @@
 
 					ul {
 						font-size: var(--pf-text-sm);
-						color: hsl(var(--pf-accent-70));
+						color: var(--pf-accent-70);
 						margin-inline-start: 0.5rem;
 					}
 				}

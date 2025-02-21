@@ -38,6 +38,9 @@
 	video={videoPreview}
 >
 	{#snippet misc()}
+		{#if random.certificate}
+			<span>{random.certificate.rating}</span>
+		{/if}
 		{#if random.first_air_date}
 			<span>{getYear(random.first_air_date)}</span>
 		{/if}

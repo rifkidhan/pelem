@@ -8,7 +8,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 
 	const { region } = locals.preference;
 
-	const data = await movieResultDetail(id, region.code);
+	const data = await movieResultDetail(id, region);
 
 	const meta_title = data.title
 		? data.release_date
@@ -20,7 +20,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		movie: data,
 		meta: {
 			title: meta_title,
-			description: data.overview
+			description: data.overview && data.overview
 		}
 	};
 };

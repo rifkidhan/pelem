@@ -1,10 +1,16 @@
 import type { PageServerLoad } from './$types';
-
-import { getMoviesOnCinema, movieResult, movieTrending, getTopRatedMovie } from '$lib/server/movie';
+import {
+	onCinemaMovie,
+	movieResult,
+	movieTrending,
+	topRatedmovie,
+	upcomingMovie,
+	popularMovie
+} from '$lib/server/movie';
 import { randomize } from '$lib/utils/array';
 
 export const load: PageServerLoad = async ({ setHeaders, locals }) => {
-	const { code } = locals.preference.region;
+	const { region } = locals.preference;
 	const dayTrending = await movieTrending('day');
 
 	const pickRandom = randomize(dayTrending.results);
@@ -15,10 +21,12 @@ export const load: PageServerLoad = async ({ setHeaders, locals }) => {
 
 	return {
 		weekTrending: movieTrending(),
-		topRated: getTopRatedMovie(),
-		onCinema: getMoviesOnCinema(code, 1),
+		topRated: topRatedmovie(),
+		onCinema: onCinemaMovie(code, 1),
+		upcoming: upcomingMovie(),
+		popular: popularMovie(),
 		dayTrending,
-		random: await movieResult(String(pickRandom.id)),
+		random: await movieResult(String(pickRandom.id), region),
 		meta: {
 			title: 'Movies'
 		}

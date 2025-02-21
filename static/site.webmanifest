@@ -16,8 +16,11 @@
 		}
 	],
 	"start-url": "/",
-	"theme_color": "#fafafa",
+	"theme_color": "#06d0bf",
 	"background_color": "#fafafa",
 	"display": "standalone",
-	"description": "Discover movies and TV show."
+	"description": "Discover movies and TV show.",
+	"orientation": "natural",
+	"start_url": "/",
+	"categories": ["entertainment"]
 }

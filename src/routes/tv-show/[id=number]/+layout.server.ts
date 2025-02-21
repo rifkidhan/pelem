@@ -7,13 +7,13 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 
 	const { region } = locals.preference;
 
-	const data = await tvResultDetail(id, region.code);
+	const data = await tvResultDetail(id, region);
 
 	return {
 		tv: data,
 		meta: {
 			title: data.name,
-			description: data.overview
+			description: data.overview && data.overview
 		}
 	};
 };

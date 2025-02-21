@@ -39,7 +39,7 @@ export interface PersonType extends Omit<Base, 'vote_count' | 'vote_average'> {
 	name?: string;
 	media_type: MediaType;
 	known_for_department?: string;
-	known_for: MovieType[] | TvType[];
+	known_for: (MovieType & TvType)[];
 }
 
 // piece of type
@@ -251,6 +251,10 @@ export interface MovieDiscover extends PaginationResult {
 
 export interface TVDiscover extends PaginationResult {
 	results: Omit<TvType, 'media_type'>[];
+}
+
+export interface PersonPopular extends PaginationResult {
+	results: Omit<PersonType, 'media_type'>[];
 }
 
 export interface MovieDetail extends Omit<MovieType, 'genre_ids' | 'media_type'> {

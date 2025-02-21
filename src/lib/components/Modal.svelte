@@ -54,7 +54,7 @@
 		margin: auto;
 
 		&::backdrop {
-			background-color: hsla(var(--pf-black), 0.5);
+			background-color: color-mix(in oklab, var(--pf-black) 50%, transparent);
 			backdrop-filter: blur(6px);
 		}
 
