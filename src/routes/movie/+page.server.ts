@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ setHeaders, locals }) => {
 	return {
 		weekTrending: movieTrending(),
 		topRated: topRatedmovie(),
-		onCinema: onCinemaMovie(code, 1),
+		onCinema: onCinemaMovie(region, 1),
 		upcoming: upcomingMovie(),
 		popular: popularMovie(),
 		dayTrending,

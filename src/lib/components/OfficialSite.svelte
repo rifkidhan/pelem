@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ExternalIds } from '$lib/types';
-	import isNull from '$lib/utils/isNull';
 	import Link from './Link.svelte';
 
 	interface OfficialSiteProps extends ExternalIds {
