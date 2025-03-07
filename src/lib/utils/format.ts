@@ -55,3 +55,12 @@ export const formatPlural = (length: number, suffixes: Record<string, string>) =
 
 	return suffix;
 };
+
+export const listFormat = (lists: string[]) => {
+	const format = new Intl.ListFormat('en-US', {
+		style: 'long',
+		type: 'conjunction'
+	});
+
+	return format.format(lists);
+};

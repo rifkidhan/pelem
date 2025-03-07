@@ -25,6 +25,16 @@
 	};
 </script>
 
+<svelte:window
+	onclickcapture={(e) => {
+		if (!open) return;
+
+		if (!modal.children.item(0)?.contains(e.target as Node)) {
+			closeModal();
+		}
+	}}
+/>
+
 <dialog bind:this={modal} {...attrs}>
 	{#if open}
 		<div class="wrapper">

@@ -21,7 +21,7 @@
 <style>
 	.back-to-button {
 		position: fixed;
-		bottom: 5vh;
+		bottom: 3vh;
 		right: 3dvw;
 		z-index: 6;
 	}

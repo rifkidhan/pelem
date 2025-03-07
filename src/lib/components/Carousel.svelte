@@ -106,6 +106,7 @@
 	</div>
 	{#if isScrollable}
 		<div class="controls">
+			<progress value={progress} max={1} class="progress-bar"></progress>
 			<div class="buttons">
 				<Button
 					id="prev"
@@ -130,7 +131,6 @@
 					<Icon icon="chevron-right" hidden />
 				</Button>
 			</div>
-			<progress value={progress} max={1} class="progress-bar"></progress>
 		</div>
 	{/if}
 </div>
@@ -144,14 +144,22 @@
 
 	.viewport {
 		--carousel-column-gap: calc(0.125rem + 2cqi);
-		--carousel-column-width: calc(18cqw - var(--carousel-column-gap));
+		--carousel-column-width: 30cqw;
 		overflow: hidden;
+
+		@container carousel (width >= 462px) {
+			--carousel-column-width: 20cqw;
+		}
+
+		@container carousel (width >= 876px) {
+			--carousel-column-width: 18cqw;
+		}
 	}
 
 	.container {
 		display: grid;
 		grid-auto-flow: column;
-		grid-auto-columns: var(--carousel-column-width);
+		grid-auto-columns: calc(var(--carousel-column-width) - var(--carousel-column-gap));
 		column-gap: var(--carousel-column-gap);
 		touch-action: pan-y pinch-zoom;
 		padding-block-start: calc(0.125rem + 1.2cqi);
@@ -195,19 +203,17 @@
 	}
 
 	.controls {
-		display: grid;
-		grid-template-columns: auto 1fr;
+		display: flex;
 		gap: 1rem;
+		justify-content: space-between;
 
-		@media (max-width: 768px) {
-			gap: 0.5rem;
+		& > .buttons {
+			flex-shrink: 0;
 		}
 
 		& > .progress-bar {
 			height: 0.5rem;
-			justify-self: flex-end;
-			max-width: 90%;
-			width: 12rem;
+			inline-size: 35%;
 			align-self: center;
 			overflow: hidden;
 			border-radius: var(--pf-radius);
@@ -216,25 +222,13 @@
 			appearance: none;
 
 			&[value]::-webkit-progress-bar {
-				background-color: var(--pf-accent-5);
+				background-color: var(--pf-accent-10);
 			}
 
 			&[value]::-webkit-progress-value,
 			&[value]::-moz-progress-bar {
 				background-color: var(--pf-primary);
 			}
-		}
-	}
-
-	@container carousel (max-width: 876px) {
-		.viewport {
-			--carousel-column-width: 20cqw;
-		}
-	}
-
-	@container carousel (max-width: 462px) {
-		.viewport {
-			--carousel-column-width: 30cqw;
 		}
 	}
 </style>

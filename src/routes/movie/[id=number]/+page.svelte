@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 
-	import { Card, Carousel, Link, ListItem, MediaGrid, OfficialSite } from '$lib/components';
+	import { Card, Carousel, Icon, Link, ListItem, MediaGrid, OfficialSite } from '$lib/components';
 	import { formatCountryName, formatCurrency, formatDate, formatLanguage } from '$lib/utils/format';
 	import isNull from '$lib/utils/isNull';
 
@@ -31,7 +31,10 @@
 				</Card>
 			{/each}
 			<li class="view-more-card" aria-roledescription="item">
-				<a href={`/movie/${movie.id}/credit`}>View more</a>
+				<a href={`/movie/${movie.id}/credit`}>
+					<Icon icon="arrow-right" hidden size={36} />
+					<span> View more </span>
+				</a>
 			</li>
 		</Carousel>
 	</section>
@@ -124,7 +127,7 @@
 		<h2 class="section-title">
 			<span>Media</span>
 		</h2>
-		{#if movie.images.length > 3}
+		{#if movie.images.length > 0}
 			<MediaGrid title={movie.title} photos={movie.images.slice(0, 7)} />
 		{/if}
 		<Link href={`/movie/${movie.id}/media`}>View all media</Link>

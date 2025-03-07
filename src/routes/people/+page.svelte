@@ -2,6 +2,7 @@
 	import type { PageProps } from './$types';
 	import { Banner, Card, Pagination } from '$lib/components';
 	import { page } from '$app/state';
+	import { listFormat } from '$lib/utils/format';
 
 	let { data }: PageProps = $props();
 
@@ -24,11 +25,7 @@
 					{#snippet content()}
 						<div class="known-for">
 							<p>Known For</p>
-							<ul class="list-with-dot">
-								{#each item.known_for as credit}
-									<li>{credit.title ?? credit.name}</li>
-								{/each}
-							</ul>
+							<p>{listFormat(item.known_for.map((v) => v.title ?? v.name ?? ''))}</p>
 						</div>
 					{/snippet}
 				</Card>
@@ -48,24 +45,29 @@
 		@media (max-width: 1024px) {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
-		@media (max-width: 690px) {
+
+		@media (max-width: 768px) {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		@media (max-width: 486px) {
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 
 	.known-for {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.25rem;
 		font-size: var(--pf-text-sm);
 
 		& > :first-child {
 			font-weight: 600;
 		}
 
-		& > ul {
-			display: flex;
-			flex-wrap: wrap;
+		& > :last-child {
+			color: var(--pf-accent-70);
+			overflow-wrap: break-word;
 		}
 	}
 </style>

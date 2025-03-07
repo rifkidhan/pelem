@@ -32,7 +32,7 @@
 			{/if}
 
 			{#if item.overview}
-				<p>{item.overview}</p>
+				<p class="overview">{item.overview}</p>
 			{/if}
 		</Card>
 	{/each}
@@ -56,5 +56,12 @@
 			text-decoration: underline;
 			text-underline-offset: 2px;
 		}
+	}
+	.overview {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 </style>

@@ -94,6 +94,16 @@
 		</Carousel>
 	{/await}
 </section>
+
+{#snippet viewMore(url: string)}
+	<li class="view-more-card" aria-roledescription="item">
+		<a href={`/tv-show/${url}`}>
+			<Icon icon="arrow-right" hidden size={36} />
+			<span> View more </span>
+		</a>
+	</li>
+{/snippet}
+
 <section>
 	<h2 class="section-title">
 		<span>Top Rated Series</span>
@@ -102,7 +112,7 @@
 		<Carousel label="skeleton" loading />
 	{:then top_rated}
 		<Carousel label="Trending on this week">
-			{#each top_rated.results as item}
+			{#each top_rated.results as item, i}
 				<Card
 					url={`/tv-show/${item.id}`}
 					title={item.name}
@@ -111,8 +121,10 @@
 					aria-roledescription="item"
 					shadow
 					as="li"
+					rank={i + 1}
 				/>
 			{/each}
+			{@render viewMore('top-rated')}
 		</Carousel>
 	{/await}
 </section>

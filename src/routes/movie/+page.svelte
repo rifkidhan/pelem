@@ -59,7 +59,10 @@
 </Hero>
 {#snippet viewMore(url: string)}
 	<li class="view-more-card" aria-roledescription="item">
-		<a href={`/movie/${url}`}>View more</a>
+		<a href={`/movie/${url}`}>
+			<Icon icon="arrow-right" hidden size={36} />
+			<span> View more </span>
+		</a>
 	</li>
 {/snippet}
 <section>

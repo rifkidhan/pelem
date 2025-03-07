@@ -72,27 +72,26 @@
 
 		.card {
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
 			position: relative;
 			background-color: var(--pf-accent-5);
 			border-radius: var(--pf-radius);
 			overflow: hidden;
-			transition: box-shadow 150ms ease-in-out;
+			transition: box-shadow 200ms ease-in-out;
 			user-select: none;
 			inline-size: 100%;
 			block-size: 100%;
-			padding: 1rem;
-			gap: 1rem;
+			gap: 0.5rem;
 			align-items: center;
 
-			@container card (max-width: 460px) {
+			@container card (width >= 200px) {
 				padding: 0.5rem;
-				gap: 0.5rem;
+				flex-direction: row;
 			}
 
-			@container card (max-width: 200px) {
-				flex-direction: column;
-				padding: 0;
+			@container card (width >= 460px) {
+				padding: 1rem;
+				gap: 1rem;
 			}
 
 			&:is(.shadow) {
@@ -113,7 +112,7 @@
 			}
 
 			.thumbnail {
-				inline-size: 18cqi;
+				inline-size: 100cqi;
 				block-size: auto;
 				position: relative;
 				border-radius: var(--pf-radius);
@@ -127,7 +126,7 @@
 					position: absolute;
 					bottom: -20px;
 					left: -15px;
-					font-size: calc(10cqi);
+					font-size: 70cqi;
 					color: var(--pf-black);
 					line-height: 1;
 					font-weight: 800;
@@ -135,25 +134,23 @@
 					paint-order: stroke fill;
 					letter-spacing: -0.25rem;
 
-					@container card (max-width: 460px) {
+					@container card (width >= 200px) {
 						font-size: 20cqi;
 					}
 
-					@container card (max-width: 200px) {
-						font-size: 70cqi;
+					@container card (width >= 460px) {
+						font-size: 10cqi;
 					}
 				}
 
-				@container card (max-width: 876px) {
-					inline-size: 23cqi;
-				}
-
-				@container card (max-width: 460px) {
+				@container card (width >= 200px) {
 					inline-size: 30cqi;
 				}
-
-				@container card (max-width: 200px) {
-					inline-size: 100cqi;
+				@container card (width >= 460px) {
+					inline-size: 23cqi;
+				}
+				@container card (width >= 876px) {
+					inline-size: 18cqi;
 				}
 
 				&:empty {
@@ -161,7 +158,7 @@
 				}
 
 				:global(img) {
-					transition: transform 150ms ease-in-out;
+					transition: transform 200ms ease-in-out;
 
 					.card:has(a):hover & {
 						transform: scale(1.05);
@@ -175,7 +172,7 @@
 				gap: 0.5rem;
 				width: 100%;
 
-				@container card (max-width: 200px) {
+				@container card (width < 200px) {
 					padding: 0.5rem;
 				}
 
@@ -203,10 +200,10 @@
 					-webkit-line-clamp: 2;
 					line-clamp: 2;
 					min-height: 2lh;
-					font-size: var(--pf-text-lg);
+					font-size: var(--pf-text-normal);
 
-					@container card (max-width: 300px) {
-						font-size: var(--pf-text-normal);
+					@container card (width >= 300px) {
+						font-size: var(--pf-text-lg);
 					}
 
 					.card:has(a):hover & {

@@ -9,7 +9,8 @@
 		ListItem,
 		MediaGrid,
 		OfficialSite,
-		Truncate
+		Truncate,
+		Icon
 	} from '$lib/components';
 	import { formatCountryName, formatDate, formatLanguage, formatPlural } from '$lib/utils/format';
 	import { EPISODE_SUFFIXES, SEASON_SUFFIXES } from '$lib/utils/constants';
@@ -124,7 +125,10 @@
 			</Card>
 		{/each}
 		<li class="view-more-card" aria-roledescription="item">
-			<a href={`/tv-show/${tv.id}/credit`}>View more</a>
+			<a href={`/tv-show/${tv.id}/credit`}>
+				<Icon icon="arrow-right" hidden size={36} />
+				<span> View more </span>
+			</a>
 		</li>
 	</Carousel>
 </section>
@@ -218,7 +222,7 @@
 		<h2 class="section-title">
 			<span>Media</span>
 		</h2>
-		{#if tv.images.length > 3}
+		{#if tv.images.length > 0}
 			<MediaGrid title={tv.name} photos={tv.images.slice(0, 7)} />
 		{/if}
 		<Link href={`/tv-show/${tv.id}/media`}>View all media</Link>

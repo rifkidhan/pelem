@@ -274,13 +274,27 @@ export const movieResultDetail = async (id: string, region_code = 'US') => {
 
 // Tv results
 
-export const getTopRatedTv = async (page = 1) => {
+export const topRatedTv = async (page = 1) => {
 	const data = await api<TVDiscover>({
 		endpoint: '/discover/tv',
 		query: {
 			include_adult: 'false',
 			include_video: 'false',
 			sort_by: 'vote_average.desc',
+			'vote_count.gte': '1000',
+			page: String(page)
+		}
+	});
+
+	return data;
+};
+
+export const popularTv = async (page = 1) => {
+	const data = await api<TVDiscover>({
+		endpoint: '/discover/tv',
+		query: {
+			include_adult: 'false',
+			sort_by: 'popularity.desc',
 			'vote_count.gte': '1000',
 			page: String(page)
 		}

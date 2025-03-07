@@ -21,8 +21,6 @@
 	const getCrew = (key: string) => {
 		return crews!.get(key)!;
 	};
-
-	$inspect(person);
 </script>
 
 {#key person.id}

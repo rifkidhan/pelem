@@ -3,7 +3,7 @@
 
 	import Icon from './icon/Icon.svelte';
 
-	interface TruncateProps extends HTMLAttributes<HTMLDivElement> {
+	interface TruncateProps extends HTMLAttributes<HTMLElement> {
 		length?: number;
 	}
 

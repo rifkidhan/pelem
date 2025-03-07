@@ -144,31 +144,68 @@
 	.details {
 		display: grid;
 		grid-template-areas:
-			'poster title title'
-			'poster misc genres'
-			'poster actions .'
-			'poster overview overview'
-			'poster credits credits';
-		grid-template-columns: auto repeat(2, 1fr);
-		grid-template-rows: 1fr repeat(2, auto) 1fr auto;
+			'poster'
+			'title'
+			'misc'
+			'actions'
+			'genres'
+			'overview'
+			'credits';
+
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr repeat(3, auto) 1fr auto;
+		place-items: center;
 		max-inline-size: 92dvw;
 		margin-inline: auto;
 		column-gap: 3rem;
 		row-gap: 1rem;
+
+		@container hero (width >= 848px) {
+			grid-template-areas:
+				'poster title'
+				'poster misc'
+				'poster actions'
+				'poster overview'
+				'poster genres'
+				'poster credits';
+
+			grid-template-columns: auto 1fr;
+			grid-template-rows: 1fr repeat(2, auto) 1fr repeat(2, auto);
+			place-items: start;
+		}
+
+		@container hero (width >= 1024px) {
+			grid-template-areas:
+				'poster title title'
+				'poster misc genres'
+				'poster actions .'
+				'poster overview overview'
+				'poster credits credits';
+			grid-template-columns: auto repeat(2, 1fr);
+			grid-template-rows: 1fr repeat(2, auto) 1fr auto;
+		}
 	}
 
 	.poster {
 		grid-area: poster;
-		inline-size: 25cqw;
+		inline-size: 35cqw;
 		block-size: fit-content;
 		display: block;
 		overflow: hidden;
 		border-radius: var(--pf-radius);
 		box-shadow: var(--pf-shadow-md);
+
+		@container hero (width >= 848px) {
+			inline-size: 25cqw;
+		}
 	}
 
 	.title {
 		grid-area: title;
+
+		@container hero (width < 848px) {
+			text-align: center;
+		}
 
 		& > .name {
 			text-wrap: balance;
@@ -245,45 +282,5 @@
 		display: grid;
 		grid-template-columns: subgrid;
 		row-gap: 0.5rem;
-	}
-
-	@container hero (max-width: 1024px) {
-		.details {
-			grid-template-areas:
-				'poster title'
-				'poster misc'
-				'poster actions'
-				'poster overview'
-				'poster genres'
-				'poster credits';
-
-			grid-template-columns: auto 1fr;
-			grid-template-rows: 1fr repeat(2, auto) 1fr repeat(2, auto);
-		}
-	}
-
-	@container hero (max-width: 848px) {
-		.details {
-			grid-template-areas:
-				'poster'
-				'title'
-				'misc'
-				'actions'
-				'genres'
-				'overview'
-				'credits';
-
-			grid-template-columns: 1fr;
-			grid-template-rows: auto 1fr repeat(3, auto) 1fr auto;
-			place-items: center;
-		}
-
-		.poster {
-			inline-size: 35cqw;
-		}
-
-		.title {
-			text-align: center;
-		}
 	}
 </style>

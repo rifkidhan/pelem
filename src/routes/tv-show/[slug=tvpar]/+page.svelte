@@ -21,11 +21,11 @@
 	<section>
 		{#each lists.results as item, i}
 			<Card
-				title={item.title}
+				title={item.name}
 				img={item.poster_path}
 				rating={item.vote_average}
 				shadow
-				url={`/movie/${item.id}`}
+				url={`/tv-show/${item.id}`}
 				rank={needRank ? i + 1 + (Math.max(pageNow, 1) - 1) * 20 : undefined}
 			>
 				{#snippet content()}
@@ -37,7 +37,7 @@
 	<Pagination
 		page={Math.max(1, pageNow)}
 		total_pages={lists.total_pages}
-		url={`/movie/${page.params.slug}`}
+		url={`/tv-show/${page.params.slug}`}
 		max_total_pages={5}
 	/>
 {/key}

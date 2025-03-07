@@ -141,6 +141,7 @@
 	}
 
 	.backdrop {
+		background-color: var(--pf-accent-70);
 		inline-size: 80%;
 		block-size: 100%;
 		position: absolute;
